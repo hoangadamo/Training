@@ -1,0 +1,14 @@
+// Install NVM and Node
++ use these commands to install nvm on mac: 
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew install nvm
+source $(brew --prefix nvm)/nvm.sh
++ to install node, run this command:
+nvm install node
++ to use the installed version
+nvm use 21
+
+// Create NodeJS Project
+mkdir myproject
+cd myproject
+npm init
