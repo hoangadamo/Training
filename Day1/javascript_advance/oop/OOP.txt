@@ -1,0 +1,29 @@
+1. OOP là gì?
+-> OOP là một mô hình dựa trên khái niệm gói gọn dữ liệu và hành vi liên quan đến dữ liệu đó vào các gói đặc biệt gọi là đối tượng. OOP tập trung vào cách mà các đối tượng giao tiếp với nhau để giải quyết các bài toán nghiệp vụ.
+Ưu điểm:
+→ Quản lý code dễ hơn và có thể tái sử dụng code
+→ Khả năng bảo trì và thay đổi chương trình nhanh chóng và hiệu quả
+→ Tích hợp tốt với các hệ thống máy tính đã có sẵn
+→ Rất trực quan khi chuyển từ mô hình phân tích thực tế sang mô hình thực thi phần mềm
+
+2. Các đặc tính của OOP: 4 đặc tính:
++ Tính đóng gói:
+Các trạng thái (đặc tính) và hành vi của các đối tượng được bọc lại trong một khối gọi là lớp. 
+→ Che dấu tính chất xử lý thông tin, chỉ cho phép truy cập thông qua các phương thức (methods) được công khai. Điều này giúp bảo vệ dữ liệu và ngăn chặn sự truy cập trái phép từ bên ngoài.
+Sử dụng các từ khóa như “public”, “protected”, “private” để chỉ định mức độ đóng gói
+- Public cho phép các thuộc tính được sử dụng thoải mái bởi các lớp khác.
+- Protected chỉ cho phép các lớp con của lớp cha được phép sử dụng
+- Private chỉ cho phép các method thuộc class đó được phép truy cập (Các lớp con cũng không được phép)
+
++ Tính kế thừa:
+Lớp con có được tất cả các thuộc tính, phương thức của lớp cha, và có thể có thêm các đặc tính khác.
+- Cho phép định nghĩa một lớp mới dựa trên của một lớp có sẵn, sao cho tất cả các thành viên của lớp "cũ" (lớp cha) cũng có mặt trong lớp mới (lớp con).
+- Thừa kế là một hình thức tái sử dụng code, tạo ra một cấu trúc phân cấp và mở rộng chức năng của các lớp
+
++ Tính đa hình:
+Là khả năng tồn tại ở nhiều hình thức.
+Các đối tượng thuộc các lớp dẫn xuất khác nhau có thể được đối xử như nhau, như thể chúng là các đối tượng thuộc lớp cơ sở. Và khi nhận được cùng một thông điệp đó, các đối tượng thuộc các lớp khác nhau hiểu nó theo những cách khác nhau.
+
++ Tính trừu tượng:
+Bỏ qua nhiều đặc điểm của đối tượng thực và chỉ tập trung vào các thuộc tính quan trọng cho việc giải một bài toán cụ thể.
+Là một cơ chế cho phép biểu diễn một tình huống phức tạp trong thế giới thực bằng một mô hình được đơn giản hóa. Nó bao gồm việc tập trung vào các tính chất quan trọng của một đối tượng khi phải làm việc với lượng lớn thông tin.
