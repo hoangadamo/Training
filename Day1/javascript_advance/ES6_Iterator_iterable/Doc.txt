@@ -1,0 +1,7 @@
+1. Iterators
++ Iterators là một bộ duyệt dùng để duyệt qua một mảng, một danh sách hoặc một collection mà qua mỗi lần duyệt sẽ ghi lại vị trí đã duyệt để từ đó có thể biết và lấy vị trí tiếp theo. 
++ Iterators có cung cấp phương thức next() và phương thức này sẽ return về phần tử kết tiếp, đồng thời ghi nhận luôn phần tử đã lặp là phần tử next(). Phương thức next() sẽ return về một Object gồm hai thuộc tính là value và done.
+
+2. Iterable
++ Iterable là khả năng cho phép các đối tượng trong Javascript sử dụng các kỹ thuật xử lý dữ liệu như for of loop, toán tử ba chấm … 
++ Iterator Protocol là các giao thức (method) xử lý một đối tượng có đánh dấu vị trí đã duyệt, vì vậy với các đối tượng thông thường sẽ không sử dụng được nên ta phải sử dụng Symbol.iterator để chuyển đổi.
