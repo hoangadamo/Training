@@ -8,7 +8,7 @@ app.get("/", function (req, res) {
 });
 // Router GET method
 app.get("/hello", function (req, res) {
-  res.send("Hello World!");
+  res.send("Example for get method");
 });
 // Router POST method
 app.post("/hello", function (req, res) {
@@ -16,15 +16,15 @@ app.post("/hello", function (req, res) {
 });
 // Put method
 app.put("/say", function (req, res) {
-  res.send("hello world!");
+  res.send("Example for put method");
 });
 // Delete method
 app.delete("/say", function (req, res) {
-  res.send("hello world!");
+  res.send("Example for delete method");
 });
 // Nhận tất cả các phương thức
-app.all("/say", function (req, res) {
-  res.send("hello world!");
+app.all("/any", function (req, res) {
+  res.send("Example for any method");
 });
 // Truyền tham số vào router
 app.get("/user/:name", function (req, res) {
