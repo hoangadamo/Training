@@ -73,10 +73,34 @@ app.put("/update/:id", (req, res) => {
   }
 });
 
+// Update status
+app.put("/status/:id", (req, res) => {
+  try {
+    const { id } = req.params;
+    const todo = todos.find((todo) => todo.id === parseInt(id));
+    if (todo) {
+      if (todo.complete == true) {
+        todo.complete = false;
+      } else {
+        todo.complete = true;
+      }
+      res.json(todo);
+    } else {
+      res.status(404).json({ message: "Todo not found" });
+    }
+  } catch (error) {
+    res.status(500).json("Server error");
+  }
+});
+
 // Delete
 app.delete("/delete/:id", (req, res) => {
   try {
     const { id } = req.params;
+    const todo = todos.find((todo) => todo.id === parseInt(id));
+    if (!todo) {
+      res.status(400).json("invalid id");
+    }
     todos = todos.filter((todo) => todo.id !== parseInt(id));
     res.status(200).json({ message: "Delete sucessfully" });
   } catch (error) {
