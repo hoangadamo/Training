@@ -14,7 +14,7 @@ let todos = [
   },
   {
     id: 3,
-    title: "To do 1",
+    title: "To do 3",
     complete: false,
   },
 ];
