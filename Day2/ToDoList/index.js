@@ -1,7 +1,23 @@
 const express = require("express");
 const app = express();
 
-let todos = [];
+let todos = [
+  {
+    id: 1,
+    title: "To do 1",
+    complete: false,
+  },
+  {
+    id: 2,
+    title: "To do 2",
+    complete: false,
+  },
+  {
+    id: 3,
+    title: "To do 1",
+    complete: false,
+  },
+];
 
 app.use(express.json());
 
@@ -9,7 +25,7 @@ app.use(express.json());
 app.post("/create", (req, res) => {
   try {
     const { title } = req.body;
-    const newTodo = { id: todos.length + 1, title };
+    const newTodo = { id: todos.length + 1, title, complete: false };
     todos.push(newTodo);
     res.status(201).json(newTodo);
   } catch (error) {
