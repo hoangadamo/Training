@@ -1,0 +1,10 @@
+Cài đặt môi trường:
++ run command: npm install -g typescript 
++ check version: tsc --version
+Tạo TypeScript project:
++ run command: npx tsc --init
++ Câu lệnh sau sẽ nhận một file TypeScript là main.ts và chuyển nó thành JavaScript main.js: tsc main.ts
+
+
+
+
