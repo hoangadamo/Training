@@ -1,0 +1,6 @@
+- Interface trong typescript cho định nghĩa thuộc tính là gì và phương thức là gì mà đối tượng cần để được implement. 
++ Nếu đối tượng tuân thủ đúng khuôn mẫu interface thì đối tượng đã implement interface ấy sẽ được thực thi đúng. 
++ Nếu interface không được thực thi đúng thì typescript sẽ phát sinh lỗi ngay lập tức. 
+- Sự khác nhau giữa Interface và Type:
++ Interface: Có thể khai báo lại, Không sử dụng được với unions, sử dụng extend hoặc khai báo lại để gộp thuộc tính
++ Type: Không thể khai báo lại, Có thể sử dụng được với unions, sử dụng intersection để gộp
