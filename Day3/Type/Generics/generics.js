@@ -3,6 +3,7 @@
 var getData = function (data) {
     return data;
 };
+
 getData([1, 2, 3, 4]);
 getData(['cat', 'dog', 'tiger']);
 var personList = [

@@ -3,6 +3,7 @@
 const getData = <T>(data:T[])=>{
     return data;
 }
+
 getData<number>([1,2,3,4])
 getData<string>(['cat','dog','tiger'])
 
