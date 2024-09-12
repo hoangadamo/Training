@@ -1,0 +1,6 @@
++ Trong TypeScript chia ra làm 7 loại cơ bản, bao gồm:
+boolean, number, string, array, enum, any, void. 
++ Khi khai báo ta sẽ sử dụng cấu trúc như sau: 
+<tên_biến> : <kiểu_trả_về> = <giá_trị_biến>; 
++ Inferred type: Typescript thông minh detect được kiểu dữ liệu tương ứng ngay cả khi mình không khai báo cụ thể kiểu dữ liệu.
+vd: let x = 100;  // tự động detech kiểu dữ liệu là number
