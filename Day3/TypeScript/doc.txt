@@ -1,0 +1,11 @@
+1. TypeScript là gì?
++ TypeScript là một dự án mã nguồn mở được phát triển bởi Microsoft, nó có thể được coi là một phiên bản nâng cao của Javascript bởi việc bổ sung tùy chọn kiểu tĩnh và lớp hướng đối tượng mà điều này không có ở Javascript.
++ TypeScript được viết trong các file .ts (hoặc .tsx cho JSX), nó không thể sử dụng trực tiếp trong trình duyệt và cần biên dịch thành JavaScript. 
++ Câu lệnh sau sẽ nhận một file TypeScript là main.ts và chuyển nó thành JavaScript main.js: tsc main.ts
+
+2. Tại sao lại có TypeScript?
+==> TypeScript ra đời để giải quyết một số hạn chế của JavaScript, đặc biệt là khi phát triển các ứng dụng lớn và phức tạp:
++ Kiểm tra kiểu tĩnh: TypeScript thêm khả năng kiểm tra kiểu tĩnh vào JavaScript, giúp phát hiện lỗi sớm trong quá trình phát triển thay vì đợi đến khi chạy ứng dụng.
++ Tự động hoàn thành và gợi ý mã: Với TypeScript, các công cụ phát triển như Visual Studio Code có thể cung cấp gợi ý mã và tự động hoàn thành tốt hơn, giúp tăng năng suất lập trình.
++ Tính nhất quán và bảo trì: TypeScript giúp mã nguồn trở nên nhất quán và dễ bảo trì hơn, đặc biệt là trong các dự án lớn với nhiều lập trình viên.
++ Hỗ trợ các tính năng mới của JavaScript: TypeScript thường hỗ trợ các tính năng mới của JavaScript trước khi chúng được chính thức đưa vào tiêu chuẩn, giúp lập trình viên có thể sử dụng các tính năng hiện đại sớm hơn.
