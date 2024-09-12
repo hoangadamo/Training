@@ -19,3 +19,15 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   }
 }
+// {
+//   "compilerOptions": {
+//     "target": "ES6",
+//     // khi build file TypeScript ra JavaScript thì bạn muốn nó ra js kiểu gì es6 hay es5.
+//     // Đây tôi muốn nó build ra es6.
+//     "watch": true,
+//     // nếu không khai báo watch thì khi có thay đổi trong file TypeScript
+//     // thì bạn phải mở CMD lên để gõ lệnh tsc để build.
+//     "outDir": "dist"
+//     // có nghĩa là bạn muốn build ra file JavaScript nó nằm ở đâu.
+//   }
+// }
