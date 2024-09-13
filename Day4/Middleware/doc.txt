@@ -1,0 +1,25 @@
++ Định nghĩa: Là các hàm được dùng để tiền xử lý, lọc các request trước khi đưa vào xử lý logic hoặc điều chỉnh các response trước khi gửi về cho người dùng.
+    HTTP Request --> Middleware (VD: cors middleware, csrf middleware, auth middleware) --> HTTP response
+
++ Một request khi gửi đến Express sẽ được xử lý qua 5 bước như sau:  
+1. Tìm Route tương ứng với request 
+2. Dùng CORS Middleware để kiểm tra cross-origin Resource sharing của request 
+3. Dùng CSRF Middleware để xác thực CSRF của request, chống fake request 
+4. Dùng Auth Middleware để xác thực request có được truy cập hay không 
+5. Xử lý công việc được yêu cầu bởi request
+   Bất kỳ bước nào trong bước 2, 3, 4 nếu xảy ra lỗi sẽ trả về response thông báo cho người dùng, có thể là lỗi CORS, lỗi CSRF, hay lỗi auth tùy thuộc vào request bị dừng ở bước nào. 
+
++ Các chức năng mà middleware có thể thực hiện trong ExpressJS sẽ bao gồm: 
+- Thực hiện bất cứ đoạn code nào 
+- Thay đổi các đối tượng request và response  
+- Kết thúc một quá trình request-response 
+- Gọi hàm middleware tiếp theo trong stack 
+
++ Trong Express có 5 kiểu middleware có thể sử dụng 
+- Application-level middleware (middleware cấp ứng dụng): Khi khởi tạo một Web Application với Express, chúng ta sẽ có một đối tượng đại diện cho Web App đó, thường được gán với biến app. Đối tượng này có thể khai báo các middleware thông qua các hàm: app.use() hoặc app.METHOD (method sẽ là các kiểu HTTP Method được Express hỗ trợ như app.get() ).
+- Router-level middleware (middleware cấp điều hướng - router): Các middleware này về chức năng không khác gì so với các application-level middleware ở trên, tuy nhiên thay vì dùng biến app có thể gây nhầm lẫn với các thiết lập, phần router có thể không rõ ràng và khó phân biệt, Express cung cấp một đối tượng router chuyên dùng để khai báo route bằng hàm sau: 
+    var router = express.Router()  
+- Error-handling middleware (middleware xử lý lỗi): Đây là các middleware phục vụ việc xử lý lỗi. Một lưu ý là các hàm cho việc này luôn nhận 4 tham số (err, req, res, next). Khi muốn khai báo một middleware cho việc xử lý lỗi, bạn cần tạo một hàm có 4 tham số đầu vào. Mặc dù bạn có thể không cần sử dụng đối tượng next, nhưng hàm vẫn cần format với bốn tham số như vậy. Nếu không ExpressJS sẽ không thể xác định đó là hàm xử lý lỗi, và sẽ không chạy khi có lỗi xảy ra, chỉ hoạt động giống như các hàm middleware khác. 
+- Built-in middleware (middleware sẵn có): Kể từ phiên bản 4.x, ngoài middleware express.static, express.json, express.urlencoded, tất cả các hàm middleware khác đều đã tách ra thành các module riêng biệt. Express.static: dựa trên thư viện serve-static, được dùng để cung cấp các nội dung tĩnh trong trang web, ví dụ như các trang HTML tĩnh, các file hình ảnh, css, js, 
+- Third-party middleware (middleware của bên thứ ba): Sử dụng third-party sẽ giúp chúng ta thêm các chức năng cho Web App của mình mà không cần mất nhiều công implement. Chúng ta sẽ cần cài đặt module thông qua npm, sau đó khai báo sử dụng trong đối tượng app, nếu dùng ở Application-level, hoặc đối tượng router nếu dùng ở Router-level 
+
