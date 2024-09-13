@@ -1,0 +1,4 @@
++ Module là những đoạn mã được đóng gói lại và được giữ Private. Điều đó có nghĩa là các hàm hay biến trong module mới có thể truy cập và thao tác với nhau. 
+Việc đóng gói các đoạn code thành các module làm cho việc phát triển và bảo trì hệ thống được dễ dàng, làm giảm sự phục thuộc các phần trong chương trình. Module còn có tính tái sử dụng cao giúp cho việc code trở nên sạch sẽ hơn. 
+
++ Để sử dụng được module đó, chúng ta cần import chúng vào trong file cần sử dụng. 
