@@ -1,0 +1,4 @@
++ Nvm (node version manager) là một package tool được phát triển trên github để quản lý phiên bản node. Lý do ta sử dụng nvm là khi gặp tình trạng quản lý và làm việc với nhiều project có các thời gian phát hành khác nhau, nên không tương thích với node mới nhất. 
++ Ta sẽ sử dụng nvm để cài đặt các phiên bản node. 
++ command để cài đặt: 
+    VD: nvm install 8.9.1

@@ -1,0 +1,12 @@
++ npm (node package manager) là một công cụ quản lý các thư viện chúng ta có được khi cài đặt nodejs (npm được cài sẵn khi chúng ta cài nodejs). Nó cung cấp cho lập trình viên cách để cài đặt những thư viện sử dụng ở toàn bộ dự án của mình hoặc có thể gói gọn trong một dự án.
+
++ Npm bao gồm 3 thành phần: 
+- Website: hiển thị một cách chi tiết nhất những thư viện được chia sẻ 
+- Command line Interface (CLI): công cụ quản lý để lấy những thư viện về 
+- Registry: lưu trữ những thư viện javascript cũng như thông tin về những thư viện đó. 
+
++ Command: 
+- kiểm tra version: npm --version
+- khởi tạo: npm init
+- để cài đặt thư viện: npm install <tên>
+- để chạy dự án: npm start

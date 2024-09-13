@@ -1,0 +1,6 @@
++ Npx (npm package executor): khi bạn muốn xem xét một số thư viện và thực thi một số lệnh, nhưng bạn không muốn cài vào nội bộ dự án của mình, thì bạn có thể sử dụng npx 
++ Command:
+npx [options] [-p | --package <package>] <command> [command-arg]...
+
++ Ví dụ: 
+    Tạo mới 1 React app: npx create-react-app my-app
