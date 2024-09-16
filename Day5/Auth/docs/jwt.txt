@@ -1,0 +1,17 @@
++ JWT được viết tắt từ cụm từ JSON Web Token. Đây là một chuẩn mở (RFC 7519) có thể giúp bạn tạo ra một cái chuỗi mã hóa chứa các dữ liệu để bạn trao đổi thông tin giữa các hệ thống khác nhau một cách an toàn và đáng tin cậy. Các chuỗi thông tin thì sẽ được mã hóa một cách ngẫu nhiên, tùy hứng và không theo một trật tự sắp xếp nào. 
++ Cấu trúc của JWT:
+- Header: Phần header sẽ chứa kiểu dữ liệu , và thuật toán sử dụng để mã hóa ra chuỗi JWT:
+{
+    "typ": "JWT",
+    "alg": "HS265"
+}
+- Payload: Phần payload sẽ chứa các thông tin mình muốn đặt trong chuỗi Token như username, userId, author…
+{
+    "user_name": "admin",
+    "user_id": "123456789",
+    "authorities": "ADMIN_USER",
+    "jti": "474cb37f-2c9c-44e4-8f5c-1ea5e4cc4d18"
+}
+- Signature: Phần chữ ký này sẽ được tạo ra bằng cách mã hóa phần header, payload kèm theo một chuỗi secret. 
++ JWT thường được dùng trong phần authentication. Khi người dùng đã đăng nhập vào hệ thống thì những request tiếp theo từ phía người dùng sẽ chứa thêm mã jwt. Điều này cho phép người dùng được cấp quyền truy cập vào các url, service, và resource mà mã token cho phép. 
+

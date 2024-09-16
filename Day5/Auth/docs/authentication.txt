@@ -1,0 +1,11 @@
++ Cơ chế authentication xác định xem bạn có phải là user của hệ thống hay không trước khi bạn sử dụng tài nguyên của hệ thống. Trong hầu hết các trường hợp ứng dụng cung cấp một login form với những thông tin nhất định để xác minh người dùng. 
+
++ Luồng hoạt động:
+1. User nhập username và password
+2. Hệ thống sẽ kiểm tra username có tồn tại trong database không:
+- Nếu không tồn tại thì báo lỗi đăng nhập
+- Nếu tồn tại thì kiểm tra xem mật khẩu có đúng không
+3. Hệ thống kiểm tra mật khẩu có đúng không:
+- Nếu mật khẩu đúng thì sẽ generate ra 1 cái access token
+- Nếu sai thì báo mật khẩu sai.
+

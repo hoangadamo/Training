@@ -1,0 +1,23 @@
++ Authorization là quá trình để xác định xem người dùng được xác thực có quyền truy cập vào các tài nguyên cụ thể hay không. Nó xác minh quyền của bạn để cấp cho bạn quyền truy cập vào các tài nguyên như thông tin, cơ sở dữ liệu, file, v.v. Authorization thường được đưa ra sau khi xác thực xác nhận các đặc quyền của bạn để thực hiện. Nói một cách đơn giản hơn, nó giống như cho phép ai đó chính thức làm điều gì đó hoặc bất cứ điều gì. 
+
++ Sau khi login, một mã access Token sẽ được gửi về phía client, client sẽ sử dụng mã này để gửi về kèm theo request, server sẽ check xem mã token này có phải do server gửi hay không, nếu đúng server sẽ cho phép request này thực hiện. 
+
++ Luồng hoạt động:
+1. Client enter username and password
+2. Generate access token (if username and password is valid)
+3. Sign token
+4. Client request to access protected resource (JWT token) 
+5. Decode token
+6. Verify token
+7. Execute request
+8. Sending response to client
+
+1. Client nhập tên người dùng và mật khẩu: Người dùng gửi thông tin đăng nhập (username và password) đến server.
+2. Tạo access token: Nếu thông tin đăng nhập hợp lệ, server sẽ tạo một access token. Token này chứa thông tin xác thực của người dùng.
+3. Ký token: Token được ký bằng một khóa bí mật để đảm bảo tính toàn vẹn và xác thực.
+4. Client yêu cầu truy cập tài nguyên bảo vệ: Client gửi yêu cầu truy cập tài nguyên bảo vệ kèm theo JWT token trong header của yêu cầu.
+5. Giải mã token: Server nhận yêu cầu và giải mã token để lấy thông tin xác thực.
+6. Xác minh token: Server kiểm tra tính hợp lệ của token (chữ ký, thời hạn, v.v.).
+7. Thực thi yêu cầu: Nếu token hợp lệ, server sẽ thực thi yêu cầu của client.
+8. Gửi phản hồi cho client: Server gửi phản hồi (dữ liệu hoặc thông báo) về cho client.
+
