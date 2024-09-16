@@ -1,0 +1,10 @@
++ Session đơn giản là 1 cách để chúng ta lưu lại dữ liệu của người dùng sử dụng website. 
+- Giá trị của session được lưu trong một tập tin trên máy chủ. 
+- Ví dụ khi bạn đăng nhập vào một trang web và đăng nhập với tài khoản đã đăng ký trước đó. Máy chủ sau khi xác thực được thông tin bạn cung cấp là đúng nó sẽ sinh ra một tập tin (hay chính là session của trình duyệt của bạn) chứa dữ liệu cần lưu trữ của người dùng. 
++ Để cài đặt: npm i express-session
++ Lưu trữ session:
+- Cookies: Chúng ta có thể store session trên cookie session nodejs mỗi trình duyệt nhưng chú ý rằng tất cả đều nằm ở Clients.  
+- Memory cache: Như chúng ta đã biết, Cache được lưu trữ trong bộ nhớ. Chúng ta cũng có thể sử dụng thêm những cache module như Redis và Memcached.
+
+
+
