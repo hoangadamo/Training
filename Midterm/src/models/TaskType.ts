@@ -1,0 +1,9 @@
+import mongoose, { Document, Schema } from "mongoose";
+
+const TaskTypeSchema: Schema = new Schema({
+    name: {type: String, required: true, unique: true},
+    color: {type: String, required: true, enum: ['#FF0000', '#00FF00']},
+    is_hidden: {type: Boolean, default: false}
+})
+
+export default mongoose.model('Task_Type', TaskTypeSchema);
