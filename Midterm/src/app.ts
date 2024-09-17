@@ -4,8 +4,8 @@ import cors from 'cors';
 import connectDB from './config/database';
 import cookieParser from 'cookie-parser';
 
-import authRoute from './routes/authRoute';
-// import projectRoute from './routes/projectRoute';
+import authRoute from './modules/auth/authController';
+// import projectRoute from './modules/project/projectController';
 
 dotenv.config();
 const app = express();
@@ -15,7 +15,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use(cookieParser());
-app.use('/auth',authRoute);
+app.use('/auth', authRoute);
 // app.use('/project', projectRoute);
 
 const PORT = process.env.PORT || 8001;

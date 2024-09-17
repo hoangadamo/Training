@@ -6,7 +6,8 @@ const ProjectSchema: Schema = new Schema({
     start_date: {type: Date, required: true},
     end_date: {type: Date, required: true},
     members: [{type: mongoose.Types.ObjectId, ref: "User"}],
-    tasks: [{type: mongoose.Types.ObjectId, ref: "Task"}]
+    tasks: [{type: mongoose.Types.ObjectId, ref: "Task"}],
+    process: {type: Number}
 })
 
 export default mongoose.model('Project', ProjectSchema);
