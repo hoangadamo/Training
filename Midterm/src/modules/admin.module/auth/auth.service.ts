@@ -22,7 +22,6 @@ export const register = async (req: Request, res: Response) => {
           name,
           date_of_birth,
           email,
-          project: [],
           invite_id
         }
       );
