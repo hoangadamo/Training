@@ -10,7 +10,8 @@ const UserSchema: Schema = new Schema(
         date_of_birth: {type: Date, required: true},
         email: {type: String, required: true},
         is_active: {type: Boolean, default: true},
-        project: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}],
+        // projects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}],
+        // tasks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Task'}],
         invite_id: {type: String, unique: true}
     }
 )
