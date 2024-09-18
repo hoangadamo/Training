@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import User from '../../models/User';
+import User from '../../../models/User';
 import bcrypt from 'bcrypt';
-import generateToken from '../../utils/generateToken';
-import validateEmail from '../../utils/validateEmail';
+import generateToken from '../../../utils/generateToken';
+import validateEmail from '../../../utils/validateEmail';
 
 export const register = async (req: Request, res: Response) => {
   const {username, password, name, date_of_birth, email, invite_id} = req.body;

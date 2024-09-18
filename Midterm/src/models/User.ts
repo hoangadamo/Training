@@ -11,7 +11,7 @@ const UserSchema: Schema = new Schema(
         email: {type: String, required: true},
         is_active: {type: Boolean, default: true},
         project: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}],
-        invite_id: {type: String}
+        invite_id: {type: String, unique: true}
     }
 )
 

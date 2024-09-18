@@ -8,3 +8,4 @@ npm i @types/cookie-parser
 npm i dotenv
 npm i nodemon
 npm i @types/jsonwebtoken
+npm i randomstring

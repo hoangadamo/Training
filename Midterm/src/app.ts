@@ -4,8 +4,9 @@ import cors from 'cors';
 import connectDB from './config/database';
 import cookieParser from 'cookie-parser';
 
-import authRoute from './modules/auth/authController';
-// import projectRoute from './modules/project/projectController';
+import authRoute from './modules/admin.module/auth/auth.controller';
+import projectRoute from './modules/admin.module/project/project.controller';
+import userRoute from './modules/admin.module/user/user.controller';
 
 dotenv.config();
 const app = express();
@@ -16,7 +17,8 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRoute);
-// app.use('/project', projectRoute);
+app.use('/admin/project', projectRoute);
+app.use('/admin/user', userRoute);
 
 const PORT = process.env.PORT || 8001;
 app.listen(PORT, () => {
