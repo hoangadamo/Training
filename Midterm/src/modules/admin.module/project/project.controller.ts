@@ -1,6 +1,6 @@
 import { Router }  from "express";
 import { verifyAdmin } from "../../../middlewares/verifyAuth";
-import { createProject, deleteProject, getAllProject, getProjectDetails, updateProject } from "./project.service";
+import { addMember, createProject, deleteProject, getAllProject, getProjectDetails, removeMember, updateProject } from "./project.service";
 
 const projectRoute = Router();
 
@@ -20,9 +20,10 @@ projectRoute.put('/update/:id', verifyAdmin, updateProject);
 projectRoute.delete('/:id', verifyAdmin, deleteProject);
 
 // add member
+projectRoute.post('/addmember/:id/:userId', verifyAdmin, addMember);
 
 // remove member
-
+projectRoute.post('/remove/:id/:userId', verifyAdmin, removeMember);
 
 
 export default projectRoute;

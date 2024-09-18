@@ -1,12 +1,17 @@
 import { Request, Response } from 'express';
 import Project from '../../../models/Project';
 import mongoose from 'mongoose';
+import User from '../../../models/User';
 
 export const createProject = async (req: Request, res: Response) => {
     try {
         const {name, slug, start_date, end_date} = req.body;
         if (!name || !slug || !start_date || !end_date) {
-            return res.status(400).json({message: "Missing infomation"})
+            return res.status(400).json({message: "Missing infomation"});
+        }
+        // check if start date is after end date
+        if (start_date >= end_date) {
+            return res.status(400).json({message: "Start date cannot be after end date"});
         }
         const newProject = new Project({
             name,
@@ -100,5 +105,54 @@ export const deleteProject = async (req: Request, res: Response) => {
         res.status(200).json({message: "Delete Successfully"});
     } catch (error: any) {
         res.status(400).json({ message: error.message});
+    }
+}
+
+export const addMember = async (req: Request, res: Response) => {
+    try {
+        const { id, userId } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Invalid project ID or user ID' });
+        }
+        // add member to project
+        const project = await Project.findById(id);
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        const members = project.members as mongoose.Types.ObjectId[];
+        if (members.includes(new mongoose.Types.ObjectId(userId))) {
+            return res.status(400).json({ message: 'User is already a member of the project' });
+        }
+        members.push(new mongoose.Types.ObjectId(userId));
+        project.members = members;
+        await project.save();
+        res.status(200).json({ message: 'Member added successfully', project });
+    } catch (error: any) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const removeMember = async (req: Request, res: Response) => {
+    try {
+        const { id, userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: 'Invalid project ID or user ID' });
+    }
+    // add member to project
+    const project = await Project.findById(id);
+    if (!project) {
+        return res.status(404).json({ message: 'Project not found' });
+    }
+
+    const members = project.members as mongoose.Types.ObjectId[];
+    // Remove userId from members array
+    const updatedMembers = members.filter(member => !member.equals(userId));
+    project.members = updatedMembers;
+    await project.save();
+
+    res.status(200).json({ message: 'Member removed successfully', project });
+    } catch (error: any) {
+        res.status(500).json({ message: error.message });
     }
 }
