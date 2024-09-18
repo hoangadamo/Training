@@ -8,7 +8,7 @@ const UserSchema: Schema = new Schema(
         name: {type: String, required: true},
         is_admin: {type: Boolean, default: false},
         date_of_birth: {type: Date, required: true},
-        email: {type: String, required: true},
+        email: {type: String, required: true, unique: true},
         is_active: {type: Boolean, default: true},
         // projects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}],
         // tasks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Task'}],
