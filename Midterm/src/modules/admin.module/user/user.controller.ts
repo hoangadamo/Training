@@ -1,6 +1,6 @@
 import { Router }  from "express";
 import { verifyAdmin } from "../../../middlewares/verifyAuth";
-import { createInviteId, getAllUser } from "./user.service";
+import { createInviteId, deleteUser, getAllUser, getUserDetails, updateUser } from "./user.service";
 
 const userRoute = Router();
 
@@ -8,16 +8,15 @@ const userRoute = Router();
 userRoute.post('/create', verifyAdmin, createInviteId);
 
 //Get all users
-userRoute.get('/', verifyAdmin, getAllUser)
-// userRoute.get('/', verifyAdmin, );
+userRoute.get('/:page', verifyAdmin, getAllUser);
 
 // Get user details
+userRoute.get('/details/:id', verifyAdmin, getUserDetails);
 
 // update user
-// userRoute.put('/update/:id', verifyAdmin, );
+userRoute.put('/update/:id', verifyAdmin, updateUser);
 
 // delete user
-
-
+userRoute.delete('/:id', verifyAdmin, deleteUser);
 
 export default userRoute;
