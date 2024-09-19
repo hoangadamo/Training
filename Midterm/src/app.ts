@@ -7,6 +7,10 @@ import cookieParser from 'cookie-parser';
 import authRoute from './modules/admin.module/auth/auth.controller';
 import projectRoute from './modules/admin.module/project/project.controller';
 import userRoute from './modules/admin.module/user/user.controller';
+import typeRoute from './modules/admin.module/types/type.controller';
+import statusRoute from './modules/admin.module/status/status.controller';
+import priorityRoute from './modules/admin.module/priority/priority.controller';
+import taskRoute from './modules/admin.module/task/task.controller';
 
 dotenv.config();
 const app = express();
@@ -19,6 +23,10 @@ app.use(cookieParser());
 app.use('/auth', authRoute);
 app.use('/admin/project', projectRoute);
 app.use('/admin/user', userRoute);
+app.use('/admin/type', typeRoute);
+app.use('/admin/status', statusRoute);
+app.use('/admin/priority', priorityRoute);
+app.use('/admin/task', taskRoute);
 
 const PORT = process.env.PORT || 8001;
 app.listen(PORT, () => {
