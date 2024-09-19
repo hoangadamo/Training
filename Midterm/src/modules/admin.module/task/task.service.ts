@@ -88,7 +88,7 @@ export const getAllTasks = async (req: Request, res: Response) => {
             },
             {
                 $sort: {
-                    'priority.order': -1 // sort by priority order
+                    'priority.order': 1 // sort by priority order
                 }
             },
             {
@@ -142,6 +142,7 @@ export const getTaskDetails = async (req: Request, res: Response) => {
     }
 };
 
+
 export const updateTask = async (req: Request, res: Response) => {
     try {
         const {id} = req.params;
@@ -149,60 +150,68 @@ export const updateTask = async (req: Request, res: Response) => {
         if (!task) {
             return res.status(404).json({message: "Task not found!"});
         }
-        const { projectId, name, typeId, priorityId, statusId, userId, start_date, end_date } = req.body;
-        // // check if start date is before end date
-        // if (start_date >= end_date) {
-        //     return res.status(400).json({message: 'Start date cannot be after end date'});
-        // }
-        // // check project id
-        // if (projectId){
-        //     const newProject = await Project.findById(projectId)
-        //     if (!newProject){
-        //         return res.status(400).json({message: 'Invalid project id'});
-        //     }
-        //     // remove task from old project
-        //     // add task to project
-        //     const oldProject = await Project.findById(task.project);
-        //     if (oldProject){
-        //         const tasks = oldProject.tasks;
-        //         const updatedTasks = tasks.filter(task => !task.equals(task._id));
-        //         oldProject.tasks = updatedTasks;
-        //         await oldProject.save();
-        //     }
-        //     if (start_date < newProject.start_date || start_date > newProject.end_date || end_date < newProject.start_date || end_date > newProject.end_date){
-        //         return res.status(400).json({message: 'invalid start date or end date'});
-        //     }
-        // }
-        // // check type id
-        // if (typeId){
-        //     const type = await TaskType.findById(typeId);
-        //     if (!type){
-        //         return res.status(400).json({message: 'Invalid type id'});
-        // }
-        // }
-        // // check priority id
-        // if (priorityId){
-        //     const priority = await TaskPriority.findById(priorityId);
-        //     if (!priority){
-        //         return res.status(400).json({message: 'Invalid priority id'});
-        //     }
-        // }
+        const { project, name, type, priority, status, assignee, start_date, end_date } = req.body;
+        // check if start date is before end date
+        if (start_date >= end_date) {
+            return res.status(400).json({message: 'Start date cannot be after end date'});
+        }
+        // check project
+        if (project){
+            const newProject = await Project.findById(project);
+            if (!newProject){
+                return res.status(400).json({message: 'Invalid project id'});
+            }
+            // add task to newProject
+            
+            // remove task from old project
+            const oldProject = await Project.findById(task.project);
+            if (oldProject){
+                const tasks = oldProject.tasks;
+                const updatedTasks = tasks.filter(task => !task.equals(task._id));
+                oldProject.tasks = updatedTasks;
+                await oldProject.save();
+            }
+            if (start_date < newProject.start_date || start_date > newProject.end_date || end_date < newProject.start_date || end_date > newProject.end_date){
+                return res.status(400).json({message: 'invalid start date or end date'});
+            }
+        }
+        // check type id
+        if (type){
+            const typeFound = await TaskType.findById(type);
+            if (!typeFound){
+                return res.status(400).json({message: 'Invalid type id'});
+        }
+        }
+        // check priority id
+        if (priority){
+            const priorityFound = await TaskPriority.findById(priority);
+            if (!priorityFound){
+                return res.status(400).json({message: 'Invalid priority id'});
+            }
+        }
         
-        // // check status id
-        // if (statusId){
-        //     const status = await TaskStatus.findById(statusId);
-        //     if (!status) {
-        //         return res.status(400).json({ message: 'Invalid status id' });
-        //     }   
-        // }
+        // check status id
+        if (status){
+            const statusFound = await TaskStatus.findById(status);
+            if (!statusFound) {
+                return res.status(400).json({ message: 'Invalid status id' });
+            }   
+        }
+        // check assignee
+        if (assignee){
+            const user = await User.findById(assignee);
+            if (!user) {
+                return res.status(400).json({ message: 'Invalid user id' });
+            }
+        }
         const updateData = {
-            projectId, name, typeId, priorityId, statusId, userId, start_date, end_date
+            project, name, type, priority, status, assignee, start_date, end_date
         }
         const updatedTask = await Task.findByIdAndUpdate(
             id,
             { $set: updateData },
             { new: true }
-        ).lean().select('-__v'); // .lean() để trả về object thuần tuý, ko gồm các thông tin khác
+        ).lean().select('-__v');
         res.status(200).json(updatedTask);
     } catch (error: any) {
         res.status(400).json({ message: error.message});
