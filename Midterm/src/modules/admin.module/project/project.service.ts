@@ -119,6 +119,10 @@ export const addMember = async (req: Request, res: Response) => {
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Invalid userId' });
+        }
         const members = project.members as mongoose.Types.ObjectId[];
         if (members.includes(new mongoose.Types.ObjectId(userId))) {
             return res.status(400).json({ message: 'User is already a member of the project' });
