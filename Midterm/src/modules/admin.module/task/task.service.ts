@@ -27,12 +27,12 @@ export const createTask = async (req: Request, res: Response) => {
         }
         // check type id
         const type = await TaskType.findById(typeId);
-        if (!type){
+        if (!type || type.is_hidden){
             return res.status(400).json({message: 'Invalid type id'});
         }
         // check priority id
         const priority = await TaskPriority.findById(priorityId);
-        if (!priority){
+        if (!priority || priority.is_hidden){
             return res.status(400).json({message: 'Invalid priority id'});
         }
         // check user id
@@ -187,14 +187,14 @@ export const updateTask = async (req: Request, res: Response) => {
         // check type id
         if (type){
             const typeFound = await TaskType.findById(type);
-            if (!typeFound){
+            if (!typeFound || typeFound.is_hidden){
                 return res.status(400).json({message: 'Invalid type id'});
         }
         }
         // check priority id
         if (priority){
             const priorityFound = await TaskPriority.findById(priority);
-            if (!priorityFound){
+            if (!priorityFound || priorityFound.is_hidden){
                 return res.status(400).json({message: 'Invalid priority id'});
             }
         }
@@ -202,7 +202,7 @@ export const updateTask = async (req: Request, res: Response) => {
         // check status id
         if (status){
             const statusFound = await TaskStatus.findById(status);
-            if (!statusFound) {
+            if (!statusFound || statusFound.is_hidden) {
                 return res.status(400).json({ message: 'Invalid status id' });
             }   
         }
