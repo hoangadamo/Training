@@ -9,6 +9,9 @@ import { addMember } from '../project/project.service';
 export const createInviteId = async (req: Request, res: Response) => {
     try {
         const {username, password, name, date_of_birth, email} = req.body;
+        if (date_of_birth > Date.now){
+            return res.status(400).json({message: "date of birth can not be in the future"})
+        }
         const salt = await bcrypt.genSalt(10);
         const hashed = await bcrypt.hash(password, salt);
         const newUser = new User({
@@ -65,9 +68,7 @@ export const getUserDetails = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'User not found' });
         }
         const projects = await Project.find({ members: id }).select('-_id name slug start_date end_date');
-        if (!projects) {
-            return res.status(404).json({ message: 'User is not added to any project' });
-        }
+        
         res.status(200).json({userDetails: user, projects});
     } catch (error: any) {
         res.status(500).json({ message: error.message });
@@ -82,6 +83,9 @@ export const updateUser = async (req: Request, res: Response) => {
             return res.status(404).json({message: "User not found!"});
         }
         const {username, name, date_of_birth, email, is_active} = req.body;
+        if (date_of_birth > Date.now){
+            return res.status(400).json({message: "date of birth can not be in the future"})
+        }
         const updateData = {username, name, date_of_birth, email, is_active};
         const updatedUser = await User.findByIdAndUpdate(
             id,
