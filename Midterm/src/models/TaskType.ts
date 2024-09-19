@@ -1,8 +1,8 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 const TaskTypeSchema: Schema = new Schema({
-    name: {type: String, required: true, unique: true},
-    color: {type: String, required: true, enum: ['#FF0000', '#00FF00']},
+    name: {type: String, required: true, unique: true/*, enum: ['feature', 'bug']*/},
+    color: {type: String, required: true/*, enum: ['#FF0000', '#00FF00']*/},
     is_hidden: {type: Boolean, default: false}
 })
 
