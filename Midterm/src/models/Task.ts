@@ -8,6 +8,7 @@ const TaskSchema: Schema = new Schema({
     priority: { type: mongoose.Types.ObjectId, ref: 'TaskPriority', required: true },
     status: { type: mongoose.Types.ObjectId, ref: 'TaskStatus', required: true },
     assignee: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+    assignee_name: {type: String},
     start_date: { type: Date, required: true },
     end_date: { type: Date, required: true }
 });
