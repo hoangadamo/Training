@@ -84,6 +84,10 @@ export const updateProject = async (req: Request, res: Response) => {
             return res.status(404).json({message: "Project not found!"});
         }
         const {name, slug, start_date, end_date} = req.body;
+        // check if start date is after end date
+        if (start_date >= end_date) {
+            return res.status(400).json({message: "Start date cannot be after end date"});
+        }
         const updateData = {name, slug, start_date, end_date};
         const updatedProject = await Project.findByIdAndUpdate(
             id,
