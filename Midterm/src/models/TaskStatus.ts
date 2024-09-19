@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import ITaskStatus from '../interface/ITaskStatus';
 
 const TaskStatusSchema: Schema = new Schema({
     name: { type: String, required: true, unique: true},
@@ -6,4 +7,4 @@ const TaskStatusSchema: Schema = new Schema({
     is_hidden: { type: Boolean, default: false}
 });
 
-export default mongoose.model('Task_Status', TaskStatusSchema);
+export default mongoose.model<ITaskStatus>('Task_Status', TaskStatusSchema);

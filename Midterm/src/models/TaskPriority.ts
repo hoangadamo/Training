@@ -1,4 +1,5 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import ITaskPriority from "../interface/ITaskPriority";
 
 const TaskPrioritySchema: Schema = new Schema({
     name: {type: String, required: true, unique: true}, // High, normal, low
@@ -6,4 +7,4 @@ const TaskPrioritySchema: Schema = new Schema({
     is_hidden: {type: Boolean, default: false}
 })
 
-export default mongoose.model('Task_Priority', TaskPrioritySchema);
+export default mongoose.model<ITaskPriority>('Task_Priority', TaskPrioritySchema);

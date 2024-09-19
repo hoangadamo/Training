@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import IProject from "../interface/IProject";
 
 const ProjectSchema: Schema = new Schema({
     name: {type: String, required: true, unique: true},
@@ -10,4 +11,4 @@ const ProjectSchema: Schema = new Schema({
     process: {type: Number}
 })
 
-export default mongoose.model('Project', ProjectSchema);
+export default mongoose.model<IProject>('Project', ProjectSchema);
