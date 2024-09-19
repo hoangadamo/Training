@@ -170,8 +170,8 @@ export const updateTask = async (req: Request, res: Response) => {
                 return res.status(400).json({ message: 'Task is already added to the project' });
             }
             tasks.push(new mongoose.Types.ObjectId(id));
-            project.tasks = tasks;
-            await project.save();
+            newProject.tasks = tasks;
+            await newProject.save();
             // remove task from old project
             const oldProject = await Project.findById(task.project);
             if (oldProject){
@@ -223,6 +223,7 @@ export const updateTask = async (req: Request, res: Response) => {
         ).lean().select('-__v');
         res.status(200).json(updatedTask);
     } catch (error: any) {
+        console.log(error);
         res.status(400).json({ message: error.message});
     }
 }
