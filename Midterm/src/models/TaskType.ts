@@ -3,7 +3,7 @@ import ITaskType from "../interface/ITaskType";
 
 const TaskTypeSchema: Schema = new Schema({
     name: {type: String, required: true, unique: true/*, enum: ['feature', 'bug']*/},
-    color: {type: String, required: true/*, enum: ['#FF0000', '#00FF00']*/},
+    color: {type: String, required: true, unique: true/*, enum: ['#FF0000', '#00FF00']*/},
     is_hidden: {type: Boolean, default: false}
 })
 

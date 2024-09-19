@@ -3,7 +3,7 @@ import ITask from '../interface/ITask';
 
 const TaskSchema: Schema = new Schema({
     project: { type: mongoose.Types.ObjectId, ref: 'Project', required: true },
-    name: { type: String, required: true },
+    name: { type: String, required: true},
     type: { type: mongoose.Types.ObjectId, ref: 'TaskType', required: true },
     priority: { type: mongoose.Types.ObjectId, ref: 'TaskPriority', required: true },
     status: { type: mongoose.Types.ObjectId, ref: 'TaskStatus', required: true },
