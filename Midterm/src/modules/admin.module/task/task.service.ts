@@ -5,11 +5,12 @@ import TaskPriority from '../../../models/TaskPriority';
 import TaskStatus from '../../../models/TaskStatus';
 import Task from '../../../models/Task';
 import User from '../../../models/User';
+import mongoose from 'mongoose';
 
 export const createTask = async (req: Request, res: Response) => {
     try {
         const { projectId, name, typeId, priorityId, userId, start_date, end_date } = req.body;
-        if (!projectId || !name || !typeId || !priorityId || !end_date) {
+        if (!projectId || !name || !typeId || !priorityId || !start_date || !end_date) {
             return res.status(400).json({message: 'Missing information'});
         }
         // check if start date is before end date
@@ -34,17 +35,19 @@ export const createTask = async (req: Request, res: Response) => {
         if (!priority){
             return res.status(400).json({message: 'Invalid priority id'});
         }
-        // check status id
-        // const status = await TaskStatus.findById(statusId);
-        // if (!status) {
-        //     return res.status(400).json({ message: 'Invalid status id' });
-        // }
+        // check user id
+        const user = await TaskStatus.findById(userId);
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid user id' });
+        }
+        const newStatus =await TaskStatus.findOne({name: "New"});
+        
         const newTask = new Task({
             project: projectId,
             name: name,
             type: typeId,
             priority: priorityId,
-            status: "66ea9cc8bdb105b1647c8165", // default: new
+            status: newStatus?._id, // default: New
             assignee: userId,
             start_date: start_date,
             end_date: end_date
@@ -162,7 +165,13 @@ export const updateTask = async (req: Request, res: Response) => {
                 return res.status(400).json({message: 'Invalid project id'});
             }
             // add task to newProject
-            
+            const tasks = newProject.tasks;
+            if (tasks.includes(new mongoose.Types.ObjectId(id))) {
+                return res.status(400).json({ message: 'Task is already added to the project' });
+            }
+            tasks.push(new mongoose.Types.ObjectId(id));
+            project.tasks = tasks;
+            await project.save();
             // remove task from old project
             const oldProject = await Project.findById(task.project);
             if (oldProject){
