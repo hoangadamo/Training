@@ -17,10 +17,10 @@ export const createTask = async (req: Request, res: Response) => {
         if (start_date >= end_date) {
             return res.status(400).json({message: 'Start date cannot be after end date'});
         }
-        // check project id
-        const project = await Project.findById(projectId)
+        // check project id and check if being member
+        const project = await Project.findOne({id: priorityId, members: userId});
         if (!project){
-            return res.status(400).json({message: 'Invalid project id'});
+            return res.status(400).json({message: 'User is not a member of the project/ Invalid project id'});
         }
         if (start_date < project.start_date || start_date > project.end_date || end_date < project.start_date || end_date > project.end_date){
             return res.status(400).json({message: 'invalid start date or end date'});
