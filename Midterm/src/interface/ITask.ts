@@ -6,7 +6,10 @@ interface ITask extends Document {
     type: mongoose.Types.ObjectId;
     priority: mongoose.Types.ObjectId;
     status: mongoose.Types.ObjectId;
-    assignee: mongoose.Types.ObjectId;
+    assignee: {
+        assignee_id: mongoose.Types.ObjectId;
+        assignee_name: string;
+    }
     start_date: Date;
     end_date: Date;
 }

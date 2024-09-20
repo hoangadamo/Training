@@ -36,7 +36,7 @@ export const createTask = async (req: Request, res: Response) => {
             return res.status(400).json({message: 'Invalid priority id'});
         }
         // check user id
-        const user = await TaskStatus.findById(userId);
+        const user = await User.findById(userId);
         if (!user) {
             return res.status(400).json({ message: 'Invalid user id' });
         }
@@ -48,7 +48,10 @@ export const createTask = async (req: Request, res: Response) => {
             type: typeId,
             priority: priorityId,
             status: newStatus?._id, // default: New
-            assignee: userId,
+            assignee: {
+                assignee_id: userId,
+                assignee_name: user.name
+            },
             start_date: start_date,
             end_date: end_date
         })
@@ -114,16 +117,6 @@ export const getAllTasks = async (req: Request, res: Response) => {
 };
 
 
-// export const getAllTasks = async (req: Request, res: Response) => {
-//     try {
-//         const tasks = await Task.find();
-
-//         res.status(200).json(tasks);
-//     } catch (error: any) {
-//         res.status(400).json({ message: error.message });
-//     }
-// };
-
 export const getTaskDetails = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -137,10 +130,10 @@ export const getTaskDetails = async (req: Request, res: Response) => {
         const type = await TaskType.findById(task.type).select('-_id name color');
         const status = await TaskStatus.findById(task.status).select('-_id name order');
         const priority = await TaskPriority.findById(task.priority).select('-_id name order');
-        const assignee = await User.findById(task.assignee).select('-_id name');
         
-        res.status(200).json({name: task.name, project, type, status, priority, assignee, start_date: task.start_date, end_date: task.end_date});
+        res.status(200).json({name: task.name, project, type, status, priority, assignee: task.assignee, start_date: task.start_date, end_date: task.end_date});
     } catch (error: any) {
+        console.log(error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -153,7 +146,7 @@ export const updateTask = async (req: Request, res: Response) => {
         if (!task) {
             return res.status(404).json({message: "Task not found!"});
         }
-        const { project, name, type, priority, status, assignee, start_date, end_date } = req.body;
+        const { project, name, type, priority, status, assignee_id, start_date, end_date } = req.body;
         // check if start date is before end date
         if (start_date >= end_date) {
             return res.status(400).json({message: 'Start date cannot be after end date'});
@@ -189,7 +182,7 @@ export const updateTask = async (req: Request, res: Response) => {
             const typeFound = await TaskType.findById(type);
             if (!typeFound || typeFound.is_hidden){
                 return res.status(400).json({message: 'Invalid type id'});
-        }
+            }
         }
         // check priority id
         if (priority){
@@ -207,14 +200,13 @@ export const updateTask = async (req: Request, res: Response) => {
             }   
         }
         // check assignee
-        if (assignee){
-            const user = await User.findById(assignee);
-            if (!user) {
-                return res.status(400).json({ message: 'Invalid user id' });
-            }
+        const user = await User.findById(assignee_id);
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid user id' });
         }
+        const assignee_name = user.name;
         const updateData = {
-            project, name, type, priority, status, assignee, start_date, end_date
+            project, name, type, priority, status, assignee: {assignee_id, assignee_name} , start_date, end_date
         }
         const updatedTask = await Task.findByIdAndUpdate(
             id,
@@ -223,7 +215,6 @@ export const updateTask = async (req: Request, res: Response) => {
         ).lean().select('-__v');
         res.status(200).json(updatedTask);
     } catch (error: any) {
-        console.log(error);
         res.status(400).json({ message: error.message});
     }
 }
