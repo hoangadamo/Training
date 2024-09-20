@@ -122,6 +122,9 @@ export const deleteProject = async (req: Request, res: Response) => {
         if (!project) {
             return res.status(400).json({message: "Project does not exist"})
         }
+        const tasks = project.tasks;
+        // delete all tasks related to the project
+        await Task.deleteMany({ _id: { $in: project.tasks } });
         res.status(200).json({message: "Delete Successfully"});
     } catch (error: any) {
         res.status(400).json({ message: error.message});
