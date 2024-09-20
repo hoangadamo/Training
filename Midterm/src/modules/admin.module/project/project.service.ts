@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import Project from '../../../models/Project';
 import mongoose from 'mongoose';
 import User from '../../../models/User';
+import TaskStatus from '../../../models/TaskStatus';
+import ITaskStatus from '../../../interface/ITaskStatus';
+import Task from '../../../models/Task';
 
 export const createProject = async (req: Request, res: Response) => {
     try {
@@ -38,14 +41,27 @@ export const getAllProject = async (req: Request, res: Response) => {
             .skip((perPage * page) - perPage)
             .limit(perPage);
 
-        const result = projects.map(project => {
-            const tasks = project.tasks as unknown[];
+        // find Status with name Closed
+        const status = await TaskStatus.findOne({ name: "Closed" }).exec();
+        if (!status) {
+            return res.status(404).json({ message: 'Status "Closed" not found!' });
+        }
+
+        const result = await Promise.all(projects.map(async project => {
+            const closedTasks = await Task.countDocuments({ project: project.id, status: status._id });
+            const totalTasks = project.tasks.length;
+            let process;
+            if (totalTasks === 0){
+                process = 0;
+            } else {
+                process = closedTasks / totalTasks;
+            }
             return {
                 name: project.name,
-                numberOfTasks: tasks.length,
-                process: project.process
+                numberOfTasks: totalTasks,
+                process
             };
-        });
+        }));
 
         const count = await Project.countDocuments();
         res.status(200).json({
@@ -65,7 +81,7 @@ export const getProjectDetails = async (req: Request, res: Response) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: 'Invalid project ID' });
         }
-        const project = await Project.findById(id).lean().select('-_id -__v');
+        const project = await Project.findById(id).lean().select('-_id -__v -process');
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
