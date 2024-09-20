@@ -18,7 +18,7 @@ export const createTask = async (req: Request, res: Response) => {
             return res.status(400).json({message: 'Start date cannot be after end date'});
         }
         // check project id and check if being member
-        const project = await Project.findOne({id: priorityId, members: userId});
+        const project = await Project.findOne({_id: projectId, members: userId});
         if (!project){
             return res.status(400).json({message: 'User is not a member of the project/ Invalid project id'});
         }
