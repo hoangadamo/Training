@@ -13,7 +13,7 @@ const UserSchema: Schema = new Schema(
         is_active: {type: Boolean, default: true},
         // projects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}],
         // tasks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Task'}],
-        invite_id: {type: String, unique: true}
+        invite_id: {type: String}
     }
 )
 
