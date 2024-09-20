@@ -15,8 +15,5 @@ const TaskSchema: Schema = new Schema({
     end_date: { type: Date, required: true }
 });
 
-// Create a compound index on { project, name } to ensure uniqueness
-TaskSchema.index({ project: 1, name: 1 }, { unique: true });
-
 // export default mongoose.model('Task', TaskSchema);
 export default mongoose.model<ITask>('Task', TaskSchema);
