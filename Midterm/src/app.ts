@@ -4,7 +4,7 @@ import cors from 'cors';
 import connectDB from './config/database';
 import cookieParser from 'cookie-parser';
 
-import authRoute from './modules/admin.module/auth/auth.controller';
+import authRoute from './modules/auth.module/auth.controller';
 import projectRoute from './modules/admin.module/project/project.controller';
 import userRoute from './modules/admin.module/user/user.controller';
 import typeRoute from './modules/admin.module/types/type.controller';

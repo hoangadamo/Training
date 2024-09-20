@@ -3,7 +3,7 @@ import { login, logout, register } from "./auth.service";
 
 const authRoute = Router();
 
-authRoute.post('/register', register);
+authRoute.put('/register/:invite_id', register);
 
 authRoute.post('/login', login);
 
