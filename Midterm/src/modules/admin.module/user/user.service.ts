@@ -4,7 +4,7 @@ import randomstring from 'randomstring';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import Project from '../../../models/Project';
-import { addMember } from '../project/project.service';
+import Task from '../../../models/Task';
 
 export const createInviteId = async (req: Request, res: Response) => {
     try {
@@ -112,8 +112,15 @@ export const deleteUser = async (req: Request, res: Response) => {
                 { $pull: { members: req.params.id } }
             );
         }
+        // change assignee of related task
+        await Task.updateMany(
+            { 'assignee.assignee_id': req.params.id },
+            { $set: { 'assignee.assignee_id': null } }
+        );
+
         res.status(200).json({message: "Delete Successfully"});
     } catch (error: any) {
+        console.log(error);
         res.status(400).json({ message: error.message});
     }
 }
