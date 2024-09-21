@@ -153,9 +153,10 @@ export const updateTask = async (req: Request, res: Response) => {
         }
         // check project
         if (project){
-            const newProject = await Project.findById(project);
+            // check project id and check if being member
+            const newProject = await Project.findOne({_id: project, members: assignee_id});
             if (!newProject){
-                return res.status(400).json({message: 'Invalid project id'});
+                return res.status(400).json({message: 'User is not a member of the project/ Invalid project id'});
             }
             // add task to newProject
             const tasks = newProject.tasks;
@@ -200,11 +201,19 @@ export const updateTask = async (req: Request, res: Response) => {
             }   
         }
         // check assignee
-        const user = await User.findById(assignee_id);
-        if (!user) {
-            return res.status(400).json({ message: 'Invalid user id' });
+        let assignee_name: string = task.assignee.assignee_name;
+        if (assignee_id){
+            const checkMember = await Project.findOne({_id: task.project, members: assignee_id});
+            if (!checkMember){
+                return res.status(400).json({message: 'User is not a member of the project'});
+            }
+            const user = await User.findById(assignee_id);
+            if (!user) {
+                return res.status(400).json({ message: 'Invalid user id' });
+            }
+            assignee_name = user.name;
         }
-        const assignee_name = user.name;
+        
         const updateData = {
             project, name, type, priority, status, assignee: {assignee_id, assignee_name} , start_date, end_date
         }
