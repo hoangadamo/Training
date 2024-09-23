@@ -45,7 +45,7 @@ export const getProjectDetails = async (req: CustomRequest, res: Response) => {
         if (totalTasks === 0){
             process = 0; 
         } else {
-            process = Math.round(closedTasks/totalTasks * 100) / 100;
+            process = (closedTasks/totalTasks).toFixed(2);
         }
         res.status(200).json({name: project.name, members: project.members, totalTasks, process, start_date: project.start_date, end_date: project.end_date});
     } catch (error: any) {
