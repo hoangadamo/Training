@@ -54,7 +54,7 @@ export const getAllProject = async (req: Request, res: Response) => {
             if (totalTasks === 0){
                 process = 0;
             } else {
-                process = (closedTasks / totalTasks).toFixed(2);
+                process = parseFloat((closedTasks / totalTasks).toFixed(2));
             }
             return {
                 name: project.name,
