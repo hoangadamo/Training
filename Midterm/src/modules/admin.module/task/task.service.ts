@@ -7,9 +7,13 @@ import Task from '../../../models/Task';
 import User from '../../../models/User';
 import mongoose from 'mongoose';
 
-export const createTask = async (req: Request, res: Response) => {
+interface CustomRequest extends Request {
+    user?: any;
+}
+
+export const createTask = async (req: CustomRequest, res: Response) => {
     try {
-        const { projectId, name, typeId, priorityId, userId, start_date, end_date } = req.body;
+        const { projectId, name, typeId, priorityId, start_date, end_date } = req.body;
         if (!projectId || !name || !typeId || !priorityId || !start_date || !end_date) {
             return res.status(400).json({message: 'Missing information'});
         }
@@ -18,7 +22,7 @@ export const createTask = async (req: Request, res: Response) => {
             return res.status(400).json({message: 'Start date cannot be after end date'});
         }
         // check project id and check if being member
-        const project = await Project.findOne({_id: projectId, members: userId});
+        const project = await Project.findOne({_id: projectId, members: req.user.id});
         if (!project){
             return res.status(400).json({message: 'User is not a member of the project/ Invalid project id'});
         }
@@ -35,11 +39,6 @@ export const createTask = async (req: Request, res: Response) => {
         if (!priority || priority.is_hidden){
             return res.status(400).json({message: 'Invalid priority id'});
         }
-        // check user id
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(400).json({ message: 'Invalid user id' });
-        }
         const newStatus =await TaskStatus.findOne({name: "New"});
         
         const newTask = new Task({
@@ -49,8 +48,8 @@ export const createTask = async (req: Request, res: Response) => {
             priority: priorityId,
             status: newStatus?._id, // default: New
             assignee: {
-                assignee_id: userId,
-                assignee_name: user.name
+                assignee_id: req.user.id, // default: me
+                assignee_name: req.user.name
             },
             start_date: start_date,
             end_date: end_date
@@ -105,7 +104,7 @@ export const getAllTasks = async (req: Request, res: Response) => {
             },
             {
                 $sort: {
-                    'status.order': 1, // sort by status order group
+                    'status.order': -1, // sort by status order group
                 }
             },
             {
