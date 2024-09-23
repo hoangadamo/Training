@@ -9,7 +9,7 @@ import Task from '../../../models/Task';
 export const createInviteId = async (req: Request, res: Response) => {
     try {
         const {username, password, name, date_of_birth, email} = req.body;
-        if (date_of_birth > Date.now){
+        if (new Date(date_of_birth).getTime() > Date.now()){
             return res.status(400).json({message: "date of birth can not be in the future"})
         }
         const salt = await bcrypt.genSalt(10);

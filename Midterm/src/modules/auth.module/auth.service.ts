@@ -19,7 +19,7 @@ export const register = async (req: Request, res: Response) => {
     if(!username || !password || !name || !date_of_birth || !email){
       return res.status(400).json({message: 'Missing information'});
     }
-      if (username.length < 5 || password.length < 8 || !validateEmail(email)){
+      if (username.length < 5 || password.length < 8 || !validateEmail(email) || new Date(date_of_birth).getTime() > Date.now()){
         return res.status(400).json({message: 'Invalid input'});
       }
       const salt = await bcrypt.genSalt(10);
