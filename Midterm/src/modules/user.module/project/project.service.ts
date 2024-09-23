@@ -14,7 +14,6 @@ export const getAllProjects = async (req: CustomRequest, res: Response) => {
         const projects = await Project.find({members: req.user.id});
 
         const result = projects.map(project => {
-            const tasks = project.tasks as unknown[];
             return {
                 _id: project.id,
                 name: project.name
@@ -48,7 +47,7 @@ export const getProjectDetails = async (req: CustomRequest, res: Response) => {
         } else {
             process = Math.round(closedTasks/totalTasks * 100) / 100;
         }
-        res.status(200).json({name: project.name, totalTasks, process, start_date: project.start_date, end_date: project.end_date});
+        res.status(200).json({name: project.name, members: project.members, totalTasks, process, start_date: project.start_date, end_date: project.end_date});
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
@@ -103,6 +102,25 @@ export const getProjectTasks = async (req: CustomRequest, res: Response) => {
             {
                 $sort: {
                     'status.order': -1, // sort by status order group
+                }
+            },
+            {
+                $project:{
+                    tasks: {
+                        $map:{
+                            input: '$tasks',
+                            as: 'task',
+                            in: {
+                                _id: '$$task._id',
+                                name: '$$task.name',
+                                priority: { name: '$$task.priority.name' },
+                                status: { name: '$$task.status.name' },
+                                assignee: '$$task.assignee',
+                                start_date: '$$task.start_date',
+                                end_date: '$$task.end_date'
+                            }
+                        }
+                    }
                 }
             }
         ]);
