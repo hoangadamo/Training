@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { Response } from "express";
-const generateToken = (userId: string, isAdmin: boolean, isActive: boolean, res: Response) =>{
+const generateToken = (userId: string, name: string, isAdmin: boolean, isActive: boolean, res: Response) =>{
     const token = jwt.sign(
         {
-            id: userId, 
+            id: userId,
+            name,
             isAdmin,
             isActive
         }, 

@@ -68,7 +68,7 @@ export const login = async (req: Request, res: Response) => {
         return res.status(404).json({message: "Wrong username or password!"});
       }
       // generate access token and store in cookie
-      const token = generateToken(user.id, user.is_admin as boolean, user.is_active as boolean, res);
+      const token = generateToken(user.id, user.name, user.is_admin as boolean, user.is_active as boolean, res);
       const { password: _, date_of_birth, invite_id, ...userWithoutPassword } = user.toObject();
       res.status(200).send({ user: userWithoutPassword, token});
     }
