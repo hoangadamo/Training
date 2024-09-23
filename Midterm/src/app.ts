@@ -11,6 +11,8 @@ import typeRoute from './modules/admin.module/types/type.controller';
 import statusRoute from './modules/admin.module/status/status.controller';
 import priorityRoute from './modules/admin.module/priority/priority.controller';
 import taskRoute from './modules/admin.module/task/task.controller';
+import userProjectRoute from './modules/user.module/project/project.controller';
+import userTaskRoute from './modules/user.module/task/task.controller';
 
 dotenv.config();
 const app = express();
@@ -21,12 +23,16 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRoute);
+// admin
 app.use('/admin/project', projectRoute);
 app.use('/admin/user', userRoute);
 app.use('/admin/type', typeRoute);
 app.use('/admin/status', statusRoute);
 app.use('/admin/priority', priorityRoute);
 app.use('/admin/task', taskRoute);
+// user
+app.use('/project', userProjectRoute);
+app.use('/task', userTaskRoute);
 
 const PORT = process.env.PORT || 8001;
 app.listen(PORT, () => {
