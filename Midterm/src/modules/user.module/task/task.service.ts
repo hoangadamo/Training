@@ -182,11 +182,14 @@ export const updateTask = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteTask = async (req: Request, res: Response) => {
+export const deleteTask = async (req: CustomRequest, res: Response) => {
     try {
-        const task = await Task.findByIdAndDelete(req.params.id);
+        const task = await Task.findOneAndDelete({
+            _id: req.params.id,
+            'assignee.assignee_id': req.user.id
+        });
         if (!task) {
-            return res.status(400).json({ message: "Task does not exist" });
+            return res.status(400).json({ message: "You do not have the permission to delete / Task does not exist" });
         }
         // Find the project that contains the task
         const project = await Project.findOne({ tasks: req.params.id });
