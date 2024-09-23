@@ -4,12 +4,12 @@ import bcrypt from 'bcrypt';
 import generateToken from '../../utils/generateToken';
 import validateEmail from '../../utils/validateEmail';
 import IUser from '../../interface/IUser';
+import validateInfo from '../../utils/validateInfo';
 
 export const register = async (req: Request, res: Response) => {
   try {
     const { invite_id } = req.params;
-    // const user = User.find({invite_id: invite_id}).lean();
-    const user = await User.findOne({ invite_id: invite_id }).exec() as IUser | null;
+    const user = await User.findOne({ invite_id: invite_id });
     if (!user) {
       return res.status(400).json({message: "Invalid invite_id"});
     }
@@ -19,7 +19,7 @@ export const register = async (req: Request, res: Response) => {
     if(!username || !password || !name || !date_of_birth || !email){
       return res.status(400).json({message: 'Missing information'});
     }
-      if (username.length < 5 || password.length < 8 || !validateEmail(email) || new Date(date_of_birth).getTime() > Date.now()){
+      if (!validateInfo(username,password) || !validateEmail(email) || new Date(date_of_birth).getTime() > Date.now()){
         return res.status(400).json({message: 'Invalid input'});
       }
       const salt = await bcrypt.genSalt(10);
