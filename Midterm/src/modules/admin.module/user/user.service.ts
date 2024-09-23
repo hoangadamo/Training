@@ -67,9 +67,12 @@ export const getUserDetails = async (req: Request, res: Response) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const projects = await Project.find({ members: id }).select('-_id name slug start_date end_date');
+        // find projects related
+        const projects = await Project.find({ members: id }).select('name slug start_date end_date');
+        // find tasks related
+        const tasks = await Task.find({ 'assignee.assignee_id': id }).select('name project start_date end_date');
         
-        res.status(200).json({userDetails: user, projects});
+        res.status(200).json({userDetails: user, projects, tasks});
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
