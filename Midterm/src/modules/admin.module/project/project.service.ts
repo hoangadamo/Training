@@ -81,11 +81,36 @@ export const getProjectDetails = async (req: Request, res: Response) => {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return res.status(400).json({ message: 'Invalid project ID' });
         }
+
         const project = await Project.findById(id).lean().select('-_id -__v -process');
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
-        res.status(200).json(project);
+
+        // Fetch member names
+        const members = await User.find({ _id: { $in: project.members } }).select('name');
+
+        // Fetch task details
+        const tasks = await Task.aggregate([
+            { $match: { _id: { $in: project.tasks } } },
+            {
+                $lookup: {
+                    from: 'task_statuses',
+                    localField: 'status',
+                    foreignField: '_id',
+                    as: 'status'
+                }
+            },
+            { $unwind: '$status' },
+            {
+                $project: {
+                    name: 1,
+                    'status.name': 1
+                }
+            }
+        ]);
+
+        res.status(200).json({ name: project.name, members, tasks });
     } catch (error: any) {
         console.log(error);
         res.status(500).json({ message: error.message });
@@ -166,12 +191,16 @@ export const removeMember = async (req: Request, res: Response) => {
     if (!mongoose.Types.ObjectId.isValid(id) || !mongoose.Types.ObjectId.isValid(userId)) {
         return res.status(400).json({ message: 'Invalid project ID or user ID' });
     }
-    // add member to project
+    // check project id
     const project = await Project.findById(id);
     if (!project) {
         return res.status(404).json({ message: 'Project not found' });
     }
-
+    // check user id
+    const user = await User.findById(userId);
+    if (!user) {
+        return res.status(404).json({ message: 'Invalid userId' });
+    }
     const members = project.members as mongoose.Types.ObjectId[];
     // Remove userId from members array
     const updatedMembers = members.filter(member => !member.equals(userId));

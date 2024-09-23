@@ -47,7 +47,7 @@ export const getProjectDetails = async (req: CustomRequest, res: Response) => {
         } else {
             process = parseFloat((closedTasks/totalTasks).toFixed(2));
         }
-        res.status(200).json({name: project.name, members: project.members, totalTasks, process, start_date: project.start_date, end_date: project.end_date});
+        res.status(200).json({name: project.name, totalTasks, process, start_date: project.start_date, end_date: project.end_date});
     } catch (error: any) {
         res.status(500).json({ message: error.message });
     }
