@@ -107,6 +107,25 @@ export const getAllTasks = async (req: Request, res: Response) => {
                 $sort: {
                     'status.order': 1, // sort by status order group
                 }
+            },
+            {
+                $project:{
+                    tasks: {
+                        $map:{
+                            input: '$tasks',
+                            as: 'task',
+                            in: {
+                                _id: '$$task._id',
+                                name: '$$task.name',
+                                priority: { name: '$$task.priority.name' },
+                                status: { name: '$$task.status.name' },
+                                assignee: '$$task.assignee',
+                                start_date: '$$task.start_date',
+                                end_date: '$$task.end_date'
+                            }
+                        }
+                    }
+                }
             }
         ]);
 
@@ -202,6 +221,7 @@ export const updateTask = async (req: Request, res: Response) => {
         }
         // check assignee
         let assignee_name: string = task.assignee.assignee_name;
+        let temp_assignee_id = task.assignee.assignee_id;
         if (assignee_id){
             const checkMember = await Project.findOne({_id: task.project, members: assignee_id});
             if (!checkMember){
@@ -212,10 +232,11 @@ export const updateTask = async (req: Request, res: Response) => {
                 return res.status(400).json({ message: 'Invalid user id' });
             }
             assignee_name = user.name;
+            temp_assignee_id = user.id;
         }
         
         const updateData = {
-            project, name, type, priority, status, assignee: {assignee_id, assignee_name} , start_date, end_date
+            project, name, type, priority, status, assignee: {assignee_id: temp_assignee_id, assignee_name} , start_date, end_date
         }
         const updatedTask = await Task.findByIdAndUpdate(
             id,
