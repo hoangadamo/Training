@@ -8,10 +8,10 @@ const taskRoute = Router();
 taskRoute.post('/create', verifyAdmin, createTask);
 
 // Get all task
-taskRoute.get('/', verifyAdmin, getAllTasks);
+taskRoute.get('/:project_id', verifyAdmin, getAllTasks);
 
 // Get task details
-taskRoute.get('/:id', verifyAdmin, getTaskDetails );
+taskRoute.get('/details/:id', verifyAdmin, getTaskDetails );
 
 // update task
 taskRoute.put('/update/:id', verifyAdmin, updateTask);

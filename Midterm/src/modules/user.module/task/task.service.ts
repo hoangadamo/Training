@@ -106,36 +106,10 @@ export const updateTask = async (req: Request, res: Response) => {
         if (!task) {
             return res.status(404).json({message: "Task not found!"});
         }
-        const { project, name, type, priority, status, assignee_id, start_date, end_date } = req.body;
+        const { name, type, priority, status, assignee_id, start_date, end_date } = req.body;
         // check if start date is before end date
         if (start_date >= end_date) {
             return res.status(400).json({message: 'Start date cannot be after end date'});
-        }
-        // check project
-        if (project){
-            const newProject = await Project.findById(project);
-            if (!newProject){
-                return res.status(400).json({message: 'Invalid project id'});
-            }
-            // add task to newProject
-            const tasks = newProject.tasks;
-            if (tasks.includes(new mongoose.Types.ObjectId(id))) {
-                return res.status(400).json({ message: 'Task is already added to the project' });
-            }
-            tasks.push(new mongoose.Types.ObjectId(id));
-            newProject.tasks = tasks;
-            await newProject.save();
-            // remove task from old project
-            const oldProject = await Project.findById(task.project);
-            if (oldProject){
-                const tasks = oldProject.tasks;
-                const updatedTasks = tasks.filter(task => !task.equals(task._id));
-                oldProject.tasks = updatedTasks;
-                await oldProject.save();
-            }
-            if (start_date < newProject.start_date || start_date > newProject.end_date || end_date < newProject.start_date || end_date > newProject.end_date){
-                return res.status(400).json({message: 'invalid start date or end date'});
-            }
         }
         // check type id
         if (type){
@@ -170,7 +144,7 @@ export const updateTask = async (req: Request, res: Response) => {
             temp_assignee_id = user.id;
         }
         const updateData = {
-            project, name, type, priority, status, assignee: {assignee_id: temp_assignee_id, assignee_name} , start_date, end_date
+            name, type, priority, status, assignee: {assignee_id: temp_assignee_id, assignee_name} , start_date, end_date
         }
         const updatedTask = await Task.findByIdAndUpdate(
             id,

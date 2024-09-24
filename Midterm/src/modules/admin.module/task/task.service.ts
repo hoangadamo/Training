@@ -69,7 +69,11 @@ export const createTask = async (req: CustomRequest, res: Response) => {
 export const getAllTasks = async (req: Request, res: Response) => {
     try {
         // const tasks = await Task.find();
+        const { project_id } = req.params;
         const tasks = await Task.aggregate([
+            {
+                $match: { project: new mongoose.Types.ObjectId(project_id) }
+            },
             {
                 $lookup: {
                     from: 'task_statuses',
@@ -171,7 +175,7 @@ export const updateTask = async (req: Request, res: Response) => {
             return res.status(400).json({message: 'Start date cannot be after end date'});
         }
         // check project
-        if (project){
+        if (project && project !== task.project){
             // check project id and check if being member
             const newProject = await Project.findOne({_id: project, members: assignee_id});
             if (!newProject){
