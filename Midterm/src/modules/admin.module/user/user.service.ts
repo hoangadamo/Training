@@ -95,6 +95,11 @@ export const updateUser = async (req: Request, res: Response) => {
             { $set: updateData },
             { new: true }
         ).lean().select('-__v -password -is_admin -invite_id');
+        // update assignee_name of related tasks
+        await Task.updateMany(
+            { 'assignee.assignee_id': id },
+            { $set: { 'assignee.assignee_name': name } }
+        );
         res.status(200).json(updatedUser);
     } catch (error: any) {
         res.status(400).json({ message: error.message});

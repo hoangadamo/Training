@@ -68,7 +68,8 @@ export const createTask = async (req: CustomRequest, res: Response) => {
 }
 export const getAllTasks = async (req: CustomRequest, res: Response) => {
     try {
-        const tasks = await Task.find({ 'assignee.assignee_id': req.user.id }).lean().select('-__v');
+        const {project_id} = req.params;
+        const tasks = await Task.find({ 'assignee.assignee_id': req.user.id, project: project_id }).lean().select('-__v');
         res.status(200).json(tasks);
     } catch (error: any) {
         console.log(error);
@@ -76,13 +77,13 @@ export const getAllTasks = async (req: CustomRequest, res: Response) => {
     }
 };
 
-export const getTaskDetails = async (req: Request, res: Response) => {
+export const getTaskDetails = async (req: CustomRequest, res: Response) => {
     try {
         const { id } = req.params;
 
-        const task = await Task.findById(id);
+        const task = await Task.findOne({_id: id, 'assignee.assignee_id': req.user.id});
         if (!task) {
-            return res.status(404).json({ message: 'Task not found' });
+            return res.status(404).json({ message: 'Task not found / You are not permission' });
         }
 
         const project = await Project.findById(task.project).lean().select('-_id name start_date end_date');
@@ -92,7 +93,6 @@ export const getTaskDetails = async (req: Request, res: Response) => {
         
         res.status(200).json({name: task.name, project, type, status: status?.name, priority: priority?.name, assignee: task.assignee, start_date: task.start_date, end_date: task.end_date});
     } catch (error: any) {
-        console.log(error);
         res.status(500).json({ message: error.message });
     }
 };
