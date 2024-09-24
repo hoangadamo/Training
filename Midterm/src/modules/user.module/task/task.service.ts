@@ -6,6 +6,7 @@ import TaskStatus from '../../../models/TaskStatus';
 import Task from '../../../models/Task';
 import User from '../../../models/User';
 import mongoose from 'mongoose';
+import { statusEnum } from '../../../utils/StatusEnum';
 
 interface CustomRequest extends Request {
     user?: any;
@@ -40,7 +41,7 @@ export const createTask = async (req: CustomRequest, res: Response) => {
             return res.status(400).json({message: 'Invalid priority id'});
         }
    
-        const newStatus =await TaskStatus.findOne({name: "New"});
+        const newStatus =await TaskStatus.findOne({name: statusEnum.NEW});
         const newTask = new Task({
             project: projectId,
             name: name,
