@@ -1,0 +1,12 @@
++ Lệnh Setup:
+    npm i -g @nestjs/cli 
+    nest new project-name 
+
++ Có hai nền tảng HTTP được hỗ trợ ngay lập tức: express và fastify. 
+- Express là một framework web nổi tiếng cho node. Đó là một thư viện đã được kiểm chứng, sẵn sàng cho việc sản xuất với rất nhiều tài nguyên do cộng đồng thực hiện. @nestjs/platform-express là gói được sử dụng mặc định. Rất nhiều người được phục vụ với Express, và không cần thêm thao tác nào để kích hoạt nó. 
+- Fastify là framework có hiệu suất cao và chi phí thấp, tập trung vào cung cấp hiệu quả và tốc độ tối đa. 
+
++ Sau khi tạo project thành công, chạy lệnh để bắt đầu phát triển dự án:
+    npm run start
+--> Câu lệnh bắt đầu ứng dụng với lắng nghe cổng HTTP được định nghĩa trong file src/main.ts. Một khi ứng dụng chạy, mở trình duyệt của chúng ta, nó sẽ chuyển đến http://localhost:3000/. Chúng ta sẽ thấy thông điệp Hello world! 
+

@@ -1,0 +1,7 @@
+Nest tận dụng các tính năng ngôn ngữ mới nhất, vì vậy, để sử dụng nó với JavaScript thông thường, chúng ta cần có trình biên dịch Babel. 
+
+Chúng ta chủ yếu sẽ sử dụng TypeScript trong các ví dụ mà Chúng ta cung cấp, nhưng chúng ta luôn có thể chuyển các đoạn mã sang cú pháp JavaScript thuần (chỉ cần nhấp để chuyển nút ngôn ngữ ở góc trên bên phải của mỗi đoạn mã). 
+
+Đảm bảo rằng Node.js (> = 10.13.0, ngoại trừ v13) được cài đặt 
+
+
