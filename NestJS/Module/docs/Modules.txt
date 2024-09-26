@@ -1,0 +1,25 @@
+@Module() decorator nhận một đối tượng duy nhất có thuộc tính mô tả module: 
++ providers: Các Provider sẽ được khởi tạo bởi injector Nest và ít nhất có thể được chia sẻ trên module này
++ controllers: Tập hợp các controller được xác định trong module này phải được khởi tạo 
++ imports: Danh sách các module được imported để xuất các providers được yêu cầu trong module này.
++ exports: Tập hợp con các providers được cung cấp bởi module này và sẽ có sẵn trong các module khác mà import module này.
+
+Module đóng gói các providers theo mặc định. Điều này có nghĩa là không thể inject providers mà ko trực tiếp là 1 phần của module hiện tại cũng như đã exported từ các module đã imported. Do đó, có thể coi các providers đã exported từ một module là giao diện công khai của module hay API.
+
+VD:
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
+@Module({
+  imports: [],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
+
++ Phân loại:
+- Shared Module là module mà các provider của nó có thể được sử dụng bởi nhiều module khác nhau. Để chia sẻ một provider, bạn cần thêm nó vào mảng exports của module đó
+- Re-exporting Module cho phép một module xuất lại các module mà nó đã nhập. Điều này giúp các module khác có thể sử dụng các provider từ module được nhập mà không cần phải nhập trực tiếp
+- Global Module là module mà các provider của nó có thể được sử dụng ở bất kỳ đâu trong ứng dụng mà không cần phải nhập module đó vào từng module cụ thể. Để tạo một global module, bạn sử dụng decorator @Global()
+- Dynamic Module là module có thể được cấu hình và đăng ký tại thời điểm chạy. Điều này cho phép bạn tạo các module có thể tùy chỉnh dựa trên các điều kiện hoặc cấu hình bên ngoài

@@ -1,0 +1,14 @@
+Trong Nest, các module là singleton theo mặc định, do đó có thể chia sẻ cùng một thực thể của bất kỳ provider nào giữa nhiều module một cách dễ dàng. 
+
+Ví dụ:
+import { Module } from '@nestjs/common';
+import { CatsService } from './cats.service';
+import { CatsController } from './cats.controller';
+
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+  exports: [CatsService],
+})
+export class CatsModule {}
+

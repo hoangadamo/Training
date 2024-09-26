@@ -1,0 +1,2 @@
++ Hệ thống module Nest bao gồm một tính năng mạnh mẽ được gọi là dynamic module. Tính năng này cho phép bạn dễ dàng tạo các module có thể tùy chỉnh có thể đăng ký và cấu hình động các providers.
++ Dynamic modules trong NestJS là một tính năng cho phép bạn cấu hình module một cách linh hoạt tại thời điểm runtime, thay vì phải định nghĩa tất cả các thông tin cần thiết trước đó. Điều này rất hữu ích khi bạn cần một module có thể thay đổi hành vi dựa trên các tham số cấu hình khác nhau.

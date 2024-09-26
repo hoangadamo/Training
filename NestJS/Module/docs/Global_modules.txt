@@ -1,0 +1,15 @@
+Khi bạn muốn cung cấp một tập hợp các providers nên có sẵn ở mọi nơi ngay lập tức (ví dụ: helpers, database connections, v.v.), hãy đặt module toàn cục với @Global() decorator. 
+
+import { Global, Module } from '@nestjs/common';
+import { CatsService } from './cats.service';
+import { CatsController } from './cats.controller';
+
+@Global()
+@Module({
+  controllers: [CatsController],
+  providers: [CatsService],
+  exports: [CatsService],
+})
+export class CatsModule {
+  constructor(private catsService: CatsService){}
+}

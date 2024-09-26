@@ -1,0 +1,9 @@
+Module có thể export các providers nội bộ của chúng. Ngoài ra, họ có thể re-import các module mà họ đã import. 
+Trong ví dụ bên dưới, CommonModule được imported và export từ CoreModule, làm cho nó có sẵn cho các module khác nhập module này.
+
+@Module({
+    imports: [CommonModule],
+    exports: [CommonModule],
+})
+export class CoreModule
+
