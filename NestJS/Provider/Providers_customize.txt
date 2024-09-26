@@ -1,0 +1,47 @@
++ Đây là cách khai báo đơn giản nhất, có thể sử dụng trong hầu hết các trường hợp.
+    @Module({ imports: [], controllers: [AppController], providers: [AppService], })
+    
++ Chúng ta có thể truyền trực tiếp các class name vào trong mảng providers. Cú pháp này là cách viết tắt của cách viết đầy đủ như sau:
+    providers: [ { provide: AppService, useClass: AppService, } ]
+
++ Nest hỗ trợ một số phương thức để thực hiện resolve dependencies:
+● useClass
+    Chúng ta chỉ cần khai báo tên class chúng ta muốn sử dụng làm instance. Chỉ có các class đăng ký @Injectable() mới có thể sử dụng làm instance theo cách này.
+    
+● useValue
+    Nest sẽ resolve dependency chúng tag chính instance hoặc value mà chúng ta khai báo. Cách này thường được dùng để viết mock test.
+
+    import { CatsService } from './cats.service';
+    const mockCatsService = { /* mock implementation ... */ };
+    @Module({ imports: [CatsModule], providers: [ { provide: CatsService, useValue: mockCatsService, }, ], })
+    export class AppModule {}
+
+● useFactory
+    Cú pháp này giúp chúng ta tạo các provider một cách dynamic. Dependency sẽ được resolve chúng tag giá trị của hàm useFactory(). Chúng ta cũng có thể inject dependencies vào các factory phức tạp.
+    - Chúng ta có thể truyền các optional params vào factory function
+    - Nếu truyền params vào factory function, chúng ta cần khai báo thêm các dependencies cho factory thông qua property inject.
+
+    const connectionFactory = {
+        provide: 'CONNECTION',
+        useFactory: (optionsProvider: OptionsProvider) => {
+            const options = optionsProvider.get();
+            return new DatabaseConnection(options); 
+        },
+        inject: [OptionsProvider], 
+    };
+    @Module({ providers: [connectionFactory], }) 
+    export class AppModule {}
+
+● useExisting
+    Phương thức này giúp chúng ta alias các providers đã tồn tại.
+
+    @Injectable()
+    class LoggerService { /* implementation details */ }
+    const loggerAliasProvider = { 
+        provide: 'AliasedLoggerService', 
+        useExisting: LoggerService, 
+    };
+    @Module({ providers: [LoggerService, loggerAliasProvider], })
+    export class AppModule {}
+
+    Ở ví dụ trên, string token `AliasedLoggerService` là một alias của LoggerService. Nếu scope của cả 2 provider này đều là SINGLETON, thì chúng sẽ trả về cùng một instance.

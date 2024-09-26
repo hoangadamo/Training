@@ -1,0 +1,21 @@
+Trong trường hợp có 2 module A và B. Nếu chúng ta muốn một provider khai báo trong module A có thể được dùng bởi module B, đây là lúc ta cần export provider đó từ module A, sau đó import module A vào trong module B để sử dụng.
+
+const connectionFactory = { 
+    provide: 'CONNECTION',
+    useFactory: (optionsProvider: OptionsProvider) => {
+        const options = optionsProvider.get();
+        return new DatabaseConnection(options); 
+    },
+    inject: [OptionsProvider], 
+};
+@Module({ 
+    providers: [connectionFactory],
+    exports: ['CONNECTION'], 
+})
+export class AppModule {}
+
+Thực ra thì export luôn cái provider object cũng được:
+
+@Module({ providers: [connectionFactory], exports: [connectionFactory], })
+export class AppModule {}
+

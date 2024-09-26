@@ -1,0 +1,27 @@
+Providers đại diện cho các class Service. Điều đó có nghĩa là các providers sẽ được inject vào những nơi cần sử dụng thông qua DI. Một số class cơ chúng ta trong Nest được xem là provider như:
+● Service
+● Factory
+● Repository
+● Helper
+
++ Trong AppService, chúng ta định nghĩa nó là một dependency chúng tag cách sử dụng decorator @Injectable().
+Ngoài ra, AppService được inject vào AppController thông qua constructor.
+    constructor(private readonly appService: AppService) {}
+Việc sử dụng Access Modifier (public – protected – private) trong constructor là một cách viết tắt giúp chúng ta có thể khai báo và khởi tạo property trong class cùng một lúc.
+Một điều quan trọng nữa là chúng ta cần register AppService trong Nest module để nó resolve và thực hiện inject AppService đúng cách.
+
++ Nest cung cấp sẵn một hệ thống IoC Container riêng giúp thực hiện DI một cách dễ dàng. Chúng ta sẽ tóm tắt cơ chế hoạt động của nó như sau
+● Trong app.service.ts, decorator @Injectable() khai báo cho IoC Container biết AppService là một dependency được quản lý bởi IoC Container.
+● Trong app.controller.ts, controller AppController khai báo nó cần dependency AppService thông qua constructor.
+● Trong app.module.ts, Nest tạo ra một token liên kết với AppService từ tập tin app.service.ts. Việc đăng ký được thực hiện thông qua mảng providers của decorator @Module().
+● Khi Nest khởi tạo AppController, nó sẽ tìm kiếm tất cả các dependencies mà AppController yêu cầu – ở đây là AppService.
+● IoC Container lúc này sẽ kiểm tra tất cả providers đã được register trong Nest module và tìm AppService thông qua AppService token đã được đăng ký trước đó.
+● Sau khi tìm thấy, nó sẽ khởi tạo (hoặc lấy về nếu đã tồn tại) instance của AppService, sau đó khởi tạo class AppController, đồng thời inject AppService vào AppController thông qua constructor.
+● Nếu không tìm thấy, Nest sẽ báo lỗi cho chúng ta biết.
+
+Ngoài ra, IoC Container còn thực hiện analysis các dependencies (Nest gọi nó là tạo Dependency Graph). Dependency Graph bảo đảm các dependencies được resolve theo thứ tự – về cơ bản chúng là “từ dưới lên“.
+
+3 types:
++ constructor
++ setter
++ interface

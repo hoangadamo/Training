@@ -1,0 +1,17 @@
++ Trong NestJS, bạn có thể sử dụng các non-class provider tokens với @Inject để cung cấp các giá trị hoặc đối tượng không phải là lớp (class)
++ Nest cũng cho phép chúng ta register DI tokens chúng tag string hoặc Symbol. 
+@Module({ 
+    providers: [
+        {
+            provide: 'CAT_REPOSITORY',
+            useValue: new CatRepository(),
+        },
+    ],
+})
+export class AppModule {}
+
+Sau đó sử dụng decorator Inject() ở nơi cần sử dụng.
+@Controller()
+export class AppController {
+    constructor(@Inject('MY_REPOSITORY') private readonly repository: CatRepository{} ... )
+}
