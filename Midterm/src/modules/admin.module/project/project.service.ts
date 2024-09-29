@@ -8,14 +8,20 @@ import Task from '../../../models/Task';
 
 export const createProject = async (req: Request, res: Response) => {
     try {
-        const {name, slug, start_date, end_date} = req.body;
-        if (!name || !slug || !start_date || !end_date) {
+        const {name, start_date, end_date} = req.body;
+        if (!name || !start_date || !end_date) {
             return res.status(400).json({message: "Missing infomation"});
         }
         // check if start date is after end date
         if (new Date(start_date) >= new Date(end_date)) {
             return res.status(400).json({message: "Start date cannot be after end date"});
         }
+        // vd: name: "Test Project 123" => slug: "test-project-123"
+        const slug = name
+            .replace(/([a-z])([A-Z])/g, '$1-$2') // Add hyphen between camelCase words
+            .replace(/[\s_]+/g, '-') // Replace spaces and underscores with hyphens
+            .toLowerCase();
+
         const newProject = new Project({
             name,
             slug,
@@ -124,14 +130,14 @@ export const updateProject = async (req: Request, res: Response) => {
         if (!project){
             return res.status(404).json({message: "Project not found!"});
         }
-        const {name, slug, start_date, end_date} = req.body;
+        const {name, start_date, end_date} = req.body;
         // check if start date is after end date
         let temp_start_date = new Date(start_date);
         let temp_end_date = new Date(end_date);
         if (new Date(start_date) >= new Date(end_date) || temp_start_date >= project.end_date || temp_end_date <= project.start_date) {
             return res.status(400).json({message: "Start date cannot be after end date"});
         }
-        const updateData = {name, slug, start_date, end_date};
+        const updateData = {name, start_date, end_date};
         const updatedProject = await Project.findByIdAndUpdate(
             id,
             { $set: updateData },
