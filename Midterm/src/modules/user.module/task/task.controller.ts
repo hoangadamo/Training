@@ -8,10 +8,10 @@ const userTaskRoute = Router();
 userTaskRoute.post('/create', verifyToken, createTask);
 
 // Get all task
-userTaskRoute.get('/:project_id', verifyToken, getAllTasks);
+userTaskRoute.get('/', verifyToken, getAllTasks);
 
 // // Get task details
-userTaskRoute.get('/details/:id', verifyToken, getTaskDetails );
+userTaskRoute.get('/:id', verifyToken, getTaskDetails );
 
 // update task
 userTaskRoute.put('/update/:id', verifyToken, updateTask);

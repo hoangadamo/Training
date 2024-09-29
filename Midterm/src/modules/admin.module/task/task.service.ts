@@ -70,12 +70,73 @@ export const createTask = async (req: CustomRequest, res: Response) => {
 }
 export const getAllTasks = async (req: Request, res: Response) => {
     try {
-        // const tasks = await Task.find();
-        const { project_id } = req.params;
+        const project_id = req.query.project_id as string;
+        if (project_id){
+            const tasks = await Task.aggregate([
+                {
+                    $match: { project: new mongoose.Types.ObjectId(project_id) }
+                },
+                {
+                    $lookup: {
+                        from: 'task_statuses',
+                        localField: 'status',
+                        foreignField: '_id',
+                        as: 'status'
+                    }
+                },
+                {
+                    $unwind: '$status'
+                },
+                {
+                    $lookup: {
+                        from: 'task_priorities',
+                        localField: 'priority',
+                        foreignField: '_id',
+                        as: 'priority'
+                    }
+                },
+                {
+                    $unwind: '$priority'
+                },
+                {
+                    $sort: {
+                        'priority.order': 1 // sort by priority order
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$status.name',
+                        tasks: { $push: '$$ROOT' }
+                    }
+                },
+                {
+                    $sort: {
+                        'status.order': -1, // sort by status order group
+                    }
+                },
+                {
+                    $project:{
+                        tasks: {
+                            $map:{
+                                input: '$tasks',
+                                as: 'task',
+                                in: {
+                                    _id: '$$task._id',
+                                    name: '$$task.name',
+                                    priority: { name: '$$task.priority.name' },
+                                    status: { name: '$$task.status.name' },
+                                    assignee: '$$task.assignee',
+                                    start_date: '$$task.start_date',
+                                    end_date: '$$task.end_date'
+                                }
+                            }
+                        }
+                    }
+                }
+            ]);
+            return res.status(200).json(tasks);
+        } 
         const tasks = await Task.aggregate([
-            {
-                $match: { project: new mongoose.Types.ObjectId(project_id) }
-            },
             {
                 $lookup: {
                     from: 'task_statuses',
@@ -134,7 +195,6 @@ export const getAllTasks = async (req: Request, res: Response) => {
                 }
             }
         ]);
-
         res.status(200).json(tasks);
     } catch (error: any) {
         res.status(400).json({ message: error.message });

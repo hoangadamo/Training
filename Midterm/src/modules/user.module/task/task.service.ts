@@ -70,9 +70,13 @@ export const createTask = async (req: CustomRequest, res: Response) => {
 }
 export const getAllTasks = async (req: CustomRequest, res: Response) => {
     try {
-        const {project_id} = req.params;
-        const tasks = await Task.find({ 'assignee.assignee_id': req.user.id, project: project_id }).lean().select('-__v');
-        res.status(200).json(tasks);
+        const project_id = req.query.project_id;
+        if (project_id){
+            const tasks = await Task.find({ 'assignee.assignee_id': req.user.id, project: project_id }).lean().select('-__v');
+            return res.status(200).json(tasks);
+        }
+        const tasks = await Task.find({ 'assignee.assignee_id': req.user.id}).lean().select('-__v');
+        res.status(200).json(tasks);        
     } catch (error: any) {
         console.log(error);
         res.status(400).json({ message: error.message });
