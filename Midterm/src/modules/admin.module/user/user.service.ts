@@ -31,10 +31,15 @@ export const createInviteId = async (req: Request, res: Response) => {
 
 export const getAllUser = async (req: Request, res: Response) => {
     // pagination
-    let perPage = 3;
-    let page = parseInt(req.params.page) || 1;
+    let perPage = parseInt(req.query.limit as string);
+    let page = parseInt(req.query.page as string);
     try {
-        const users = await User.find().skip((perPage * page) - perPage).limit(perPage);
+        let users = [];
+        if (perPage && page){
+            users = await User.find().skip((perPage * page) - perPage).limit(perPage);
+        } else {
+            users = await User.find();
+        }
         const result = users.map(user => {
             return {
                 _id: user.id,
@@ -44,13 +49,17 @@ export const getAllUser = async (req: Request, res: Response) => {
                 email: user.email
             };
         });
-        const count = await User.countDocuments();
-        res.status(200).json({
-            users: result,
-            currentPage: page,
-            totalPages: Math.ceil(count / perPage),
-            totalUsers: count
-        });
+        if (perPage && page){
+            const count = await User.countDocuments();
+            res.status(200).json({
+                users: result,
+                currentPage: page,
+                totalPages: Math.ceil(count / perPage),
+                totalUsers: count
+            });
+        } else {
+            res.status(200).json(result);
+        }
 
     } catch (error: any) {
         res.status(400).json({ message: error.message});

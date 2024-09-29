@@ -9,10 +9,10 @@ const userRoute = Router();
 userRoute.post('/create', verifyAdmin, validateInfo, createInviteId);
 
 //Get all users
-userRoute.get('/:page', verifyAdmin, getAllUser);
+userRoute.get('/', verifyAdmin, getAllUser);
 
 // Get user details
-userRoute.get('/details/:id', verifyAdmin, getUserDetails);
+userRoute.get('/:id', verifyAdmin, getUserDetails);
 
 // update user
 userRoute.put('/update/:id', verifyAdmin, updateUser);
