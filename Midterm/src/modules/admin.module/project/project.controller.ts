@@ -20,10 +20,10 @@ projectRoute.put('/update/:id', verifyAdmin, updateProject);
 projectRoute.delete('/:id', verifyAdmin, deleteProject);
 
 // add member
-projectRoute.post('/addmember/:id/:userId', verifyAdmin, addMember);
+projectRoute.put('/addmember/:id/:userId', verifyAdmin, addMember);
 
 // remove member
-projectRoute.post('/remove/:id/:userId', verifyAdmin, removeMember);
+projectRoute.put('/remove/:id/:userId', verifyAdmin, removeMember);
 
 
 export default projectRoute;
