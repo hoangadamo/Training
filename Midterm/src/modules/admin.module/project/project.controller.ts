@@ -8,10 +8,10 @@ const projectRoute = Router();
 projectRoute.post('/create', verifyAdmin, createProject);
 
 //Get all project
-projectRoute.get('/:page', verifyAdmin, getAllProject);
+projectRoute.get('/', verifyAdmin, getAllProject);
 
 // Get project details
-projectRoute.get('/details/:id', verifyAdmin, getProjectDetails);
+projectRoute.get('/:id', verifyAdmin, getProjectDetails);
 
 // update project
 projectRoute.put('/update/:id', verifyAdmin, updateProject);

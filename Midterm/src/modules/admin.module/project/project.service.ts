@@ -40,13 +40,17 @@ export const createProject = async (req: Request, res: Response) => {
 
 export const getAllProject = async (req: Request, res: Response) => {
     // pagination
-    let perPage = 3;
-    let page = parseInt(req.params.page) || 1;
     try {
-        const projects = await Project.find()
+        let perPage = parseInt(req.query.limit as string);
+        let page = parseInt(req.query.page as string);
+        let projects = [];
+        if (perPage && page){
+            projects = await Project.find()
             .skip((perPage * page) - perPage)
             .limit(perPage);
-
+        } else {
+            projects = await Project.find();
+        }
         // find Status with name Closed
         const status = await TaskStatus.findOne({ name: "Closed" }).exec();
         if (!status) {
@@ -69,14 +73,20 @@ export const getAllProject = async (req: Request, res: Response) => {
             };
         }));
 
-        const count = await Project.countDocuments();
-        res.status(200).json({
-            projects: result,
-            currentPage: page,
-            totalPages: Math.ceil(count / perPage),
-            totalProjects: count
-        });
+        if (perPage && page){
+            const count = await Project.countDocuments();
+            res.status(200).json({
+                projects: result,
+                currentPage: page,
+                totalPages: Math.ceil(count / perPage),
+                totalProjects: count
+            });
+        } else {
+            res.status(200).json(result);
+        }
+        
     } catch (error: any) {
+        console.log(error);
         res.status(400).json({ message: error.message });
     }
 };

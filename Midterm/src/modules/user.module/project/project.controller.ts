@@ -8,7 +8,7 @@ const userProjectRoute = Router();
 userProjectRoute.get('/', verifyToken, getAllProjects);
 
 // Get project details
-userProjectRoute.get('/details/:id', verifyToken, getProjectDetails);
+userProjectRoute.get('/:id', verifyToken, getProjectDetails);
 
 // Get project tasks
 userProjectRoute.get('/tasks/:id',verifyToken, getProjectTasks);
