@@ -13,7 +13,7 @@ export const createProject = async (req: Request, res: Response) => {
             return res.status(400).json({message: "Missing infomation"});
         }
         // check if start date is after end date
-        if (start_date >= end_date) {
+        if (new Date(start_date) >= new Date(end_date)) {
             return res.status(400).json({message: "Start date cannot be after end date"});
         }
         const newProject = new Project({
@@ -120,13 +120,15 @@ export const getProjectDetails = async (req: Request, res: Response) => {
 export const updateProject = async (req: Request, res: Response) => {
     try {
         const {id} = req.params;
-        const project = Project.findById(id);
+        const project = await Project.findById(id);
         if (!project){
             return res.status(404).json({message: "Project not found!"});
         }
         const {name, slug, start_date, end_date} = req.body;
         // check if start date is after end date
-        if (start_date >= end_date) {
+        let temp_start_date = new Date(start_date);
+        let temp_end_date = new Date(end_date);
+        if (new Date(start_date) >= new Date(end_date) || temp_start_date >= project.end_date || temp_end_date <= project.start_date) {
             return res.status(400).json({message: "Start date cannot be after end date"});
         }
         const updateData = {name, slug, start_date, end_date};

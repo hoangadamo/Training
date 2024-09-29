@@ -24,10 +24,10 @@ export const createTask = async (req: CustomRequest, res: Response) => {
             return res.status(404).json({ message: 'You are not the member of the project / Project does not exist!' });
         }
         // check start date and end date
-        if (start_date >= end_date) {
+        if (new Date(start_date) >= new Date(end_date)) {
             return res.status(400).json({message: 'Start date cannot be after end date'});
         }
-        if (start_date < project.start_date || start_date > project.end_date || end_date < project.start_date || end_date > project.end_date){
+        if (new Date(start_date) < project.start_date || new Date(start_date) > project.end_date || new Date(end_date) < project.start_date || new Date(end_date) > project.end_date){
             return res.status(400).json({message: 'invalid start date or end date'});
         }
         // check type id
@@ -108,9 +108,19 @@ export const updateTask = async (req: Request, res: Response) => {
         }
         const { name, type, priority, status, assignee_id, start_date, end_date } = req.body;
         // check if start date is before end date
-        if (start_date >= end_date) {
-            return res.status(400).json({message: 'Start date cannot be after end date'});
+        const current_project = await Project.findById(task.project);
+        if (!current_project) {
+            return res.status(404).json({ message: "Project not found!" });
+        } 
+        let temp_start_date = new Date(start_date);
+        let temp_end_date = new Date(end_date);
+        console.log(temp_end_date);
+        console.log(current_project.start_date);
+        console.log(temp_end_date<current_project.start_date);
+        if (new Date(start_date) >= new Date(end_date)  || temp_start_date >= current_project.end_date || temp_end_date <= current_project.start_date || temp_start_date >= task.end_date || temp_end_date <= task.start_date) {
+            return res.status(400).json({message: 'Start date cannot be after end date / cannot out of project duration '});
         }
+
         // check type id
         if (type){
             const typeFound = await TaskType.findById(type);
