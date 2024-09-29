@@ -41,6 +41,8 @@ export const createTask = async (req: CustomRequest, res: Response) => {
             return res.status(400).json({message: 'Invalid priority id'});
         }
         const newStatus =await TaskStatus.findOne({name: statusEnum.NEW});
+
+        const user = await User.findById(req.user.id);
         
         const newTask = new Task({
             project: projectId,
@@ -49,8 +51,8 @@ export const createTask = async (req: CustomRequest, res: Response) => {
             priority: priorityId,
             status: newStatus?._id, // default: New
             assignee: {
-                assignee_id: req.user.id, // default: me
-                assignee_name: req.user.name
+                assignee_id: user?.id, // default: me
+                assignee_name: user?.name
             },
             start_date: start_date,
             end_date: end_date
