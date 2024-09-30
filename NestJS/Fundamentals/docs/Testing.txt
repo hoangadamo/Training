@@ -1,0 +1,49 @@
+TESTING (KIỂM THỬ)
++ Testing có nghĩa là kiểm tra code của chúng ta có đáp ứng kỳ vọng hay không.
+Ví dụ: một function có tên là Tổng sẽ trả về kết quả phép tính cộng một dãy số được người dùng nhập vào.
+- Để viết được unit test ta có thể sử dụng các công cụ khác nhau ví dụ như Jest. Jest là một trình chạy thử nghiệm JavaScript, nghĩa là một thư viện javascript để tạo, và để kiểm tra các thục tục hay hàm trong js. 
+Jest là một package có sẵn trong NPM, bạn có thể cài đặt nó trong bất kỳ dự án JavaScript nào. Jest là một trong những trình chạy thử nghiệm phổ biến nhất hiện nay và được sử dụng nhiều trong các dự án
+VD:
+// function
+function sum(a, b) {
+  return a + b;
+}
+module.exports = sum;
+
+// test
+const sum = require('./sum');
+test('adds 1 + 2 to equal 3', () => {
+  expect(sum(1, 2)).toBe(3);
+});
+
+---------------------------------------------------------------------------------------------------------------------------------
+OTHER FUNDAMENTALS
++ Filter:
+- Mục đích: Xử lý các ngoại lệ (exceptions) trong ứng dụng.
+- Cách hoạt động: Khi một ngoại lệ xảy ra, filter sẽ bắt và xử lý nó, sau đó trả về response thích hợp cho client.
+---------------------------------------------------------------------------------------------------------------------------------
++ Pipe:
+- Mục đích: Chuyển đổi và xác thực dữ liệu trước khi nó được xử lý bởi các route handler.
+- Cách hoạt động: Pipes có thể thay đổi dữ liệu đầu vào hoặc kiểm tra tính hợp lệ của dữ liệu trước khi nó được truyền vào các phương thức của controller.
+- Pipes có 2 use cases điển hình:
+    * transformation: chuyển đổi input data thành dạng mong muốn (VD: từ string thành integer)
+    * validation: đánh giá dữ liệu đầu vào và nếu hợp lệ, chỉ cần truyền nó qua mà không thay đổi; nếu không, ném một exception
+	Một số pipe dựng sẵn: VD: ParseIntPipe: 
+        @Get(':id')
+        async findOne(@Param('id', ParseIntPipe) id: number) {
+            return this.catsService.findOne(id);
+        }
+	Điều này đảm bảo rằng một trong hai điều kiện sau là đúng: hoặc tham số chúng ta nhận được trong phương thức findOne() là một number hoặc một ngoại lệ được đưa ra trước khi trình route handler được gọi.
+---------------------------------------------------------------------------------------------------------------------------------
++ Guard:
+- Mục đích: Kiểm soát quyền truy cập vào các route.
+- Cách hoạt động: Guards xác định xem một yêu cầu có được phép truy cập vào một route cụ thể hay không, thường được sử dụng cho xác thực và phân quyền.
+---------------------------------------------------------------------------------------------------------------------------------
++ Interceptor:
+- Mục đích: Thực hiện logic bổ sung trước và sau khi xử lý yêu cầu.
+- Cách hoạt động: Interceptors có thể thay đổi yêu cầu hoặc phản hồi, ghi log, hoặc xử lý ngoại lệ một cách tùy chỉnh.
+---------------------------------------------------------------------------------------------------------------------------------
++ Custom Decorator:
+- Mục đích: Tạo các decorator tùy chỉnh để thêm metadata hoặc logic vào các thành phần của ứng dụng.
+- Cách hoạt động: Custom decorators được tạo bằng cách sử dụng các hàm và có thể được áp dụng cho các lớp, phương thức, hoặc tham số để thêm chức năng tùy chỉnh.
+

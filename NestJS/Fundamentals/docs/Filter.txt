@@ -1,0 +1,23 @@
+Filter:
+- Mục đích: Xử lý các ngoại lệ (exceptions) trong ứng dụng.
+- Cách hoạt động: Khi một ngoại lệ xảy ra, filter sẽ bắt và xử lý nó, sau đó trả về phản hồi thích hợp cho client.
+
+Cần truy cập vào các đối tượng Request và Respose của nền tảng của chúng ta. 
+Truy cập đối tượng Request để có thể lấy ra url chúng ta đầu và đưa url đó vào thông tin ghi nhật ký. 
+Sử dụng đối tượng Response để kiểm soát trực tiếp response được gửi chúng tag cách sử dụng phương thức response.json(). 
+
+@Catch(HttpException) decorator liên kết metadata bắt buộc với bộ lọc exception, cho Nest biết rằng bộ lọc cụ thể này đang tìm kiếm các exception của loại HttpException và không có gì khác. @Catch() decorator có thể nhận một tham số duy nhất hoặc một
+danh sách được phân tách chúng tag dấu phẩy. Điều này cho phép chúng ta thiết lập bộ lọc cho một số loại exception cùng một lúc.
+
+@UseFilters(new HttpExceptionFilter())
+export class CatsController {}
+Cấu trúc này thiết lập HttpExceptionFilter cho mọi route handler được xác định bên trong CatsController.
+
+Để tạo bộ lọc phạm vi toàn cục, chúng ta sẽ thực hiện như sau:
+async function boostrap(){
+    const app = await NestFactory.create(AppModule);
+    app.useGlobalFilters(new HttpExceptionFilter());
+    await app.listen(3000);
+}
+boostrap();
+

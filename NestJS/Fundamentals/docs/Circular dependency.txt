@@ -1,0 +1,40 @@
+Sự phụ thuộc vòng tròn xảy ra khi hai lớp phụ thuộc vào nhau. Ví dụ: lớp A cần lớp B và lớp B cũng cần lớp A. Các phụ thuộc vòng tròn có thể phát sinh trong Nest giữa các mô-đun và giữa các providers. 
+Mặc dù nên tránh các phụ thuộc vòng tròn nếu có thể, nhưng không phải lúc nào bạn cũng có thể làm như vậy. Trong những trường hợp như vậy, Nest cho phép giải quyết sự phụ thuộc vòng tròn giữa các providers theo hai cách. Trong phần này mô tả việc sử dụng tham chiếu chuyển tiếp như một kỹ thuật và sử dụng lớp ModuleRef để truy xuất một instance provider từ vùng chứa DI như một kỹ thuật khác. 
+
+- Tham chiếu chuyển tiếp (Forward reference):
+Một forward reference cho phép Nest tham chiếu các lớp chưa được xác định bằng cách sử dụng utility function: forwardRef()
+Ví dụ, nếu CatsService và CommonService phụ thuộc lẫn nhau, cả hai bên của mối quan hệ có thể sử dụng @Inject() và forwardRef() để giải quyết (resolve) circular dependency.
+
+@Injectable()
+export class CatsService {
+  constructor(
+    @Inject(forwardRef(() => CommonService))
+    private commonService: CommonService,
+  ) {}
+}
+
+Điều đó bao gồm một mặt của mối quan hệ. Bây giờ làm tương tự với CommonService:
+@Injectable()
+export class CommonService {
+  constructor(
+    @Inject(forwardRef(() => CatsService))
+    private catsService: CatsService,
+  ) {}
+}
+
+- Lớp thay thế ModuleRef:
+Một giải pháp thay thế cho việc sử dụng forwardRef() là cấu trúc lại code của bạn và sử dụng lớp ModuleRef để truy xuất 1 provider ở một bên của mối quan hệ tuần hoàn (nếu không)
+
+- Module forward reference:
+Để giải quyết các mối phụ thuộc tuần hoàn giữa các mô-đun, hãy sử dụng cùng một hàm tiện ích forwardRef() ở cả hai phía của liên kết mô-đun.
+common.module.ts:
+@Module({
+  imports: [forwardRef(() => CatsModule)],
+})
+export class CommonModule {}
+
+cats.module.ts:
+@Module({
+  imports: [forwardRef(() => CommonModule)],
+})
+export class CatsModule {}

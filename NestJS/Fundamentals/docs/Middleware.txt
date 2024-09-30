@@ -1,0 +1,25 @@
+Middleware là một hàm được gọi trước khi tới handler route. 
+Các hàm middleware có quyền truy cập vào các object request và response cũng như hàm middleware next() trong chu trình request-response của ứng dụng. Hàm middlware next thường được ký hiệu chúng tag một biến có tên là next. 
+
+Nest middleware, theo mặc định, tương đương với express middleware.
+Các hàm Middleware có thể thực hiện các nhiệm vụ sau:
+- Thực thi bất kỳ mã nào. 
+- Thực hiện các thay đổi đối với request và response object. 
+- Kết thúc chu kỳ request-response. 
+- Gọi hàm middleware tiếp theo trong ngăn xếp. 
+- Nếu hàm middleware hiện tại không kết thúc chu kỳ request-response, nó phải gọi next() để chuyển quyền điều khiển cho hàm middleware tiếp theo. Nếu không, request sẽ bị treo. 
+
+Chúng ta triển khai middleware Nest tùy chỉnh trong một hàm hoặc trong một class với @Injectable() decorator. Lớp nên implement interface NestMiddleware, trong khi hàm này không có bất kỳ yêu cầu đặc biệt nào. Hãy bắt đầu chúng tag cách triển khai một tính năng middleware đơn giản chúng tag cách sử dụng phương thức lớp. 
+
+import {Injectable, NestMiddleware} from '@nestjs/common';
+import {Request, Response, NextFunction} from 'express';
+
+@Injectable()
+export class LoggerMiddleware implements NestMiddleware {
+    use(req: Request, res: Response, next: NextFunction) {
+        console.log('Request...');
+        next();
+    }
+}
+
+Không có chỗ cho middleware trong @Module() decorator. Thay vào đó, Chúng ta thiết lập chúng chúng tag phương thức configure() của lớp mô-đun. Các mô-đun bao gồm middleware phải triển khai interface NestModule. Hãy thiết lập LoggerMiddleware ở cấp AppModule. 

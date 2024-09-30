@@ -1,0 +1,31 @@
+- Trong NestJS, lifecycle events là các sự kiện xảy ra trong quá trình khởi tạo, chạy và tắt ứng dụng. NestJS cung cấp các lifecycle hooks để bạn có thể thực thi mã khi các sự kiện này xảy ra. Các sự kiện này giúp bạn quản lý việc khởi tạo module, dịch vụ, và xử lý kết nối một cách hiệu quả.
+- Ứng dụng Nest, cũng như các phần tử ứng dụng, có vòng đời do Nest quản lý. Nest cung cấp các lifecycle hook giúp thực hiện các hành động khi chạy một ứng dụng nest.
+
+Một lifecycle event xảy ra khi một ứng dụng bắt đầu khởi chạy cho đến khi ứng dụng được kết thúc. Nest gọi các hàm đăng ký lifecycle event trong các mothod module, injectable và controller. Một số lifecycle event trong nestjs
+
+Tên Lifecycle hook              | Sự kiện được trigger khi gọi
+---------------------------------------------------------------------------------------------------------------------------------
+onModuleInit()                  | Được gọi khi các module trong ứng dụng nestjs đều được khởi tạo và biên dịch không gặp lỗi 
+---------------------------------------------------------------------------------------------------------------------------------
+onApplicationBootstrap()        | Được gọi khi tất cả các module đều đã được khởi tạo, nhưng trước khi lắng nghe kết nối 
+                                  (database, ...) 
+---------------------------------------------------------------------------------------------------------------------------------
+onModuleDestroy()               | Được gọi sau khi nhận tín hiệu kết thúc ứng dụng 
+---------------------------------------------------------------------------------------------------------------------------------
+beforeApplicationShutdown()*    | Được gọi khi tất cả các tiến trình trong mothod monMuduleDestroy() được hoàn thành, tất cả các 
+                                  kết nối đến các dịch vụ database, cache, queue, … được đóng.
+---------------------------------------------------------------------------------------------------------------------------------
+onApplicationShutdown()*        | Được gọi sau khi tất cả các kết nối được đóng
+                                  
+Ví dụ:
+import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+
+@Injectable()
+export class MyService implements OnModuleInit, OnModuleDestroy {
+  onModuleInit() {
+    console.log('Module has been initialized.');
+  }
+  onModuleDestroy() {
+    console.log('Module is being destroyed.');
+  }
+}
