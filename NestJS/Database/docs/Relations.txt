@@ -1,0 +1,7 @@
+Relation là sự liên kết được thiết lập giữa hai hoặc nhiều bảng. Các mối quan hệ dựa
+trên các trường chung từ mỗi bảng, thường liên quan đến khóa chính và khóa ngoài.
+Có ba loại quan hệ:
+- One-to-One
+- Many-to-One/One-to-many
+- Many-to-Many
+

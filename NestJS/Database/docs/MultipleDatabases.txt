@@ -1,0 +1,48 @@
+Một số dự án yêu cầu kết nối nhiều cơ sở dữ liệu,
+Để làm được điều đó, ta cần đặt tên cho các kết nối ví dụ như sau:
+
+const defaultOptions = {
+  type: 'postgres',
+  port: 5432,
+  username: 'postgres',
+  password: 'root',
+  database: 'db',
+  synchronize: true,
+};
+
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({
+      ...defaultOptions,
+      host: 'user_db_host',
+      entities: [User],
+    }),
+    TypeOrmModule.forRoot({
+      ...defaultOptions,
+      name: 'albumsConnection',
+      host: 'album_db_host',
+      entities: [Album],
+    }),
+  ],
+})
+export class AppModule {}
+
+Sau khi khai báo connection với tên của nó thì khi import feature hoặc InjectionRepository, InjectConnection, InjectEntity ta cần khai báo kèm name đằng sau:
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Album], 'albumsConnection'),
+  ],
+})
+export class AppModule {}
+
+@Injectable()
+export class AlbumsService {
+  constructor(
+    @InjectDataSource('albumsConnection')
+    private dataSource: DataSource,
+    @InjectEntityManager('albumsConnection')
+    private entityManager: EntityManager,
+  ) {}
+}
+

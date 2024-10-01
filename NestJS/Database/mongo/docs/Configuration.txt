@@ -1,0 +1,4 @@
+Các ứng dụng thường chạy trong các môi trường khác nhau. Tùy thuộc vào môi trường, nên sử dụng các cài đặt cấu hình khác nhau. Ví dụ, thông thường môi trường local sẽ có những config cho môi trường local, dev sẽ có config cho môi trường dev, prodution sẽ có cấu hình cho môi trường production
+- Các biến môi trường trong nodejs có thể được thấy thông qua method process.env. Trong các ứng dụng nodejs ta có thể sử dụng file .env sử dụng các cặp key-value đại diện cho một giá trị cụ thể ứng với từng môi trường khác nhau. Cụ thể trong nestjs cung cấp package ConfigModule có thể cấu hình .env cho từng môi trường khác nhau một cách thuận tiện và quản lý tốt hơn.
+
+    npm i --save @nestjs/config

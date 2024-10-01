@@ -1,0 +1,21 @@
++ Khai báo UserEntity này vào TypeOrm Config:
+- Sử dụng phương thức forFeature để xác định Entity sẽ dùng trong module
+@Module({
+  imports: [TypeOrmModule.forFeature([User])],
+  controllers: [UsersController],
+  providers: [UsersService],
+})
+export class UsersModule {}
+
+- đưa UsersRepository vào UsersService bằng cách sử dụng decorator @InjectRepository ():
+@Injectable()
+export class UsersService {
+  constructor(
+    @InjectRepository(User)
+    private usersRespository: Repository<User>,
+  ){}
+
+  findAll(): Promise<User[]> {
+    return this.usersRespository.find();
+  }
+}

@@ -1,0 +1,83 @@
++ Tìm kiếm tất cả các bản ghi
+const users = await userRepository.find();
+
++ Tìm kiếm một bản ghi theo điều kiện
+const user = await userRepository.findOneBy({ id: 1 });
+
++ Thêm mới một bản ghi
+const newUser = userRepository.create({ name: 'John Doe', age: 25 });
+await userRepository.save(newUser);
+
++ Cập nhật một bản ghi:
+const user = await userRepository.findOneBy({ id: 1 });
+user.name = 'Jane Doe';
+await userRepository.save(user);
+
++ Xóa một bản ghi:
+await userRepository.delete({ id: 1 });
+
++ Sử dụng query builder để tạo các query phức tạp:
+const users = await userRepository.createQueryBuilder('user')
+  .where('user.age > :age', { age: 18 })
+  .getMany();
+
++ Chạy raw SQL query
+const rawData = await dataSource.query('SELECT * FROM users WHERE age > $1', [18]);
+
+------------------------------------------------------------------------------------------------------------
++ Select:
+const users = await userRepository.createQueryBuilder("user").getMany();
+
+const user = await userRepository.createQueryBuilder("user")
+  .where("user.id = :id", { id: 1 })
+  .getOne();
+
++ Insert:
+await userRepository.createQueryBuilder()
+  .insert()
+  .into(User)
+  .values([
+    { name: "John", email: "john@example.com" },
+    { name: "Jane", email: "jane@example.com" }
+  ])
+  .execute();
+
++ Update:
+await userRepository.createQueryBuilder()
+  .update(User)
+  .set({ name: "John Updated" })
+  .where("id = :id", { id: 1 })
+  .execute();
+
++ Delete:
+await userRepository.createQueryBuilder()
+  .delete()
+  .from(User)
+  .where("id = :id", { id: 1 })
+  .execute();
+
++ Join Queries (Left Join):
+const users = await userRepository.createQueryBuilder("user")
+  .leftJoinAndSelect("user.profile", "profile")
+  .getMany();
+
++ Aggregation Queries:
+const count = await userRepository.createQueryBuilder("user")
+  .where("user.isActive = :isActive", { isActive: true })
+  .getCount();
+
++ Advanced Queries:
+const users = await userRepository.createQueryBuilder("user")
+  .where("user.id IN (SELECT userId FROM UserRoles WHERE roleId = :roleId)", { roleId: 1 })
+  .getMany();
+
++ Pagination:
+const users = await userRepository.createQueryBuilder("user")
+  .limit(10)
+  .offset(20)
+  .getMany();
+
++ Ordering:
+const users = await userRepository.createQueryBuilder("user")
+  .orderBy("user.name", "ASC")
+  .getMany();

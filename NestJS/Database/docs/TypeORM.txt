@@ -1,0 +1,13 @@
++ Để cài đặt:
+    npm install --save @nestjs/typeorm typeorm mysql2
+Nếu dùng postgre thì cần cài đặt thêm: npm install pg --save
+
++ Sau khi quá trình cài đặt hoàn tất, nhập TypeOrmModule vào AppModule gốc.
+
++ Cài đặt synchronize: true không nên sử dụng cho production, nếu không có thể mất dữ liệu.
+
++ Phương thức forRoot hỗ trợ các thuộc tính qua hàm createConnection() từ gói TypeORM. Thêm nữa, có thể cấu hình các thuộc tính dưới: 
+- retryAttempts: Số lần cố gắng kết nối với cơ sở dữ liệu (default: 10)
+- retryDelay: Độ trễ giữa các lần thử lại kết nối (mili giây) (default: 3000) 
+- autoLoadEntities: Nếu đúng, các thực thể sẽ được tải tự động (default: false)
+- keepConnectionAlive: Nếu true, kết nối sẽ không bị đóng khi tắt ứng dụng (default: false)

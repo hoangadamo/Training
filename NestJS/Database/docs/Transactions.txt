@@ -1,0 +1,15 @@
+Transaction là một tiến trình xử lý có xác định điểm đầu và điểm cuối, được chia nhỏ thành các operation (phép thực thi) , tiến trình được thực thi một cách tuần tự và độc lập các operation đó theo nguyên tắc hoặc tất cả đều thành công hoặc một operation thất bại thì toàn bộ tiến trình thất bại.
+- Nếu việc thực thi một operation nào đó bị fail đồng nghĩa với việc dữ liệu phải rollback về trạng thái ban đầu.
+
+VD:
+  async createMany(users: User[]){ 
+    // Bắt đầu một transaction
+    await this.dataSource.transaction(async manager =>{
+      // Lưu từng user vào cơ sở dữ liệu
+      await manager.save(users[0]);
+      await manager.save(users[1]);
+      // Nếu có lỗi xảy ra trong quá trình lưu, toàn bộ giao dịch sẽ bị rollback
+    })
+  }
+
+

@@ -1,0 +1,25 @@
+- Migrations cung cấp một cách để cập nhật từng bước database schema để giữ cho nó đồng bộ với mô hình dữ liệu của ứng dụng
+- Nếu sử dụng synchronize: true thì không cần phải migrations vì nó sẽ tự động đồng bộ dữ liệu cho bạn nhưng nó lại khá rủi ro
+
+- Thêm 3 script vào file package.json:
+    "migrate:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n",
+    "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert"
+    
+- Ví dụ ta có 1 Entity, sau đó chạy câu lệnh:
+    npm run migrate:create create
+    
+Thu được:
+import {MigrationInterface, QueryRunner} from "typeorm";
+export class createArticle1558196824347 implements MigrationInterface {
+    public async up(queryRunner:QueryRunner):Promise<any> {
+        await queryRunner.query(`CREATE TABLE "article"("id"SERIAL NOT NULL
+        CONSTRAINT "PK 40808690eb7b915046558c0f81b"PRIMARY KEY ("id"))`);
+    }
+    public async down(queryRunner:QueryRunner):Promise<any> {
+        await queryRunner.query(DROP TABLE "article");
+    }
+}
+
+Cuối cùng chạy lệnh migrate:up để sinh ra bảng trong database: 
+    npm run migrate:up
