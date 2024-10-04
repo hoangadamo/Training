@@ -1,0 +1,40 @@
+npm init -y
+npm install --save-dev typescript ts-node @types/node @types/express @types/mongoose
+npm i @types/bcrypt
+npm install cors --save
+npm i @types/cors
+npm i cookie-parser
+npm i @types/cookie-parser
+npm i dotenv
+npm i nodemon
+npm i @types/jsonwebtoken
+npm i randomstring
+-----
+
+### `$lookup`
+Giai đoạn `$lookup` thực hiện một phép nối ngoài trái (left outer join) với một collection khác trong cùng cơ sở dữ liệu để lọc các tài liệu từ collection "được nối" để xử lý. Trong đoạn code của bạn:
+
+- **from**: Collection để nối với (`task_statuses` hoặc `task_priorities`).
+- **localField**: Trường từ các tài liệu đầu vào (`status` hoặc `priority`).
+- **foreignField**: Trường từ các tài liệu của collection "được nối" (`_id`).
+- **as**: Tên của trường mảng mới để thêm vào các tài liệu đầu vào (`status` hoặc `priority`).
+
+### `$unwind`
+Giai đoạn `$unwind` giải cấu trúc một trường mảng từ các tài liệu đầu vào để xuất ra một tài liệu cho mỗi phần tử của mảng. Điều này hữu ích khi bạn muốn làm việc với từng phần tử của mảng riêng biệt. Trong đoạn code của bạn:
+
+- **$unwind: '$status'**: Điều này sẽ giải cấu trúc trường mảng `status`, vì vậy mỗi tài liệu sẽ có một đối tượng `status` duy nhất thay vì một mảng.
+- **$unwind: '$priority'**: Tương tự, điều này sẽ giải cấu trúc trường mảng `priority`.
+
+### Phân tích ví dụ
+1. **Giai đoạn `$lookup` và `$unwind` đầu tiên**:
+   - Nối với collection `task_statuses` để lấy chi tiết trạng thái cho mỗi task.
+   - Giải cấu trúc mảng `status` để mỗi task có một đối tượng trạng thái duy nhất.
+
+2. **Giai đoạn `$lookup` và `$unwind` thứ hai**:
+   - Nối với collection `task_priorities` để lấy chi tiết ưu tiên cho mỗi task.
+   - Giải cấu trúc mảng `priority` để mỗi task có một đối tượng ưu tiên duy nhất.
+
+### Sắp xếp và Nhóm
+- **$sort**: Sắp xếp các task theo `priority.order` giảm dần.
+- **$group**: Nhóm các task theo `status.name` và đẩy toàn bộ tài liệu task vào một mảng gọi là `tasks`.
+- **$sort cuối cùng**: Sắp xếp các nhóm task theo `status.order` tăng dần.

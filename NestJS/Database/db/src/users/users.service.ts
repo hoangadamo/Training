@@ -11,6 +11,7 @@ export class UsersService {
     private dataSource: DataSource, // Inject DataSource để quản lý các transaction
   ){}
 
+  // transaction
   async createMany(users: User[]){ 
     // Bắt đầu một transaction
     await this.dataSource.transaction(async manager =>{

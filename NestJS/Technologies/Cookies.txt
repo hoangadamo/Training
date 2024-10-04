@@ -1,0 +1,24 @@
+Cookie HTTP là một phần dữ liệu nhỏ được trình duyệt của người dùng lưu trữ. Cookie được thiết kế để trở thành một cơ chế đáng tin cậy để các trang web ghi nhớ thông tin trạng thái. Khi người dùng truy cập lại trang web, cookie sẽ tự động được gửi kèm theo
+yêu cầu.
+
++ installation:
+npm i cookie-parser
+npm i -D @types/cookie-parser
+
+Chúng ta có thể viết nó vào trong main như sau:
+import * as cookieParser from 'cookie-parser';
+// somewhere in your initialization file
+app.use(cookieParser);
+
+// Lấy thông tin cookie
+@Get()
+findAll(@Req() request: Request) {
+  console.log(request.cookies); // or "request.cookies['cookieKey']"
+  // or console.log(request.signedCookies);
+}
+
+// Để đính kèm cookie vào phản hồi gửi đi
+@Get()
+findAll(@Res({ passthrough: true }) response: Response) {
+  response.cookie('key', 'value')
+}

@@ -1,0 +1,51 @@
+Serialization là một quá trình xảy ra trước khi các đối tượng được trả về trong một phản hồi từ mạng. 
+Đây là nơi thích hợp để cung cấp các quy tắc chuyển đổi và làm sạch dữ liệu sẽ được trả lại cho client. 
+Ví dụ: dữ liệu nhạy cảm như mật khẩu phải luôn được loại trừ khỏi response. Hoặc, một số thuộc tính nhất định có thể yêu cầu chuyển đổi bổ sung, chẳng hạn như chỉ gửi một tập hợp con các thuộc tính của một thực thể. 
+Thực hiện các phép biến đổi này theo cách thủ công có thể dễ xảy ra lỗi, đồng thời có thể khiến bạn không chắc chắn rằng tất cả các trường hợp đã được bảo vệ. 
+
+Nest cung cấp một khả năng tích hợp để giúp đảm bảo rằng các hoạt động này có thể được thực hiện một cách đơn giản. ClassSerializerInterceptor sử dụng package classtransformer để cung cấp một cách khai báo và có thể mở rộng đối tượng biến đổi. 
+
++ @Exclude(): ẩn trường khỏi kết quả
+export class UserEntity {
+  id: number;
+  firstName: string;
+  lastName: string;
+  @Exclude()
+  password: string;
+  constructor(partial: Partial<UserEntity>) {
+    Object.assign(this, partial);
+  }
+}
+
+@UseInterceptors(ClassSerializerInterceptor)
+@Get()
+findOne() ...
+
++ @Expose(): cung cấp tên alias cho các thuộc tính hoặc để thực thi một hàm nhằm tính toán giá trị thuộc tính (tương tự như các getters):
+@Expose()
+get fullName(): string {
+  return `${this.firstName} ${this.lastName}`;
+}
+
++ @Transform: thực hiện chuyển đổi dữ liệu bổ sung. 
+Ví dụ, cấu trúc sau trả về thuộc tính name của RoleEntity thay vì trả về toàn bộ đối tượng.
+@Transform(({ value }) => value.name)
+role: RoleEntity;
+
++ Pass options: Bạn có thể muốn sửa đổi hành vi mặc định của các transformation functions. Để override các thiết lập mặc định, truyền chúng vào một options object với decorator @SerializeOptions():
+
+@SerializeOptions({
+  excludePrefixes: ['_'],
+})
+@Get()
+findOne(): UserEntity {
+  return new UserEntity();
+}
+
+Ví dụ:
+export class UserEntity {
+  id: number;
+  name: string;
+  email: string;
+  _password: string; // thuộc tính này sẽ bị ẩn trong response
+}

@@ -1,0 +1,48 @@
+Validation là cách tốt nhất là xác nhận tính đúng đắn của bất kỳ dữ liệu nào được gửi vào ứng dụng web. Để tự động xác thực các request đến, Nest cung cấp một số pipe có sẵn ngay khi phản hồi :
+- ValidationPipe
+- ParseIntPipe
+- ParseBoolPipe
+- ParseArrayPipe
+- ParseUUIDPipe
+- ValidationPipe sử dụng gói package class-validator và sử dụng decorator khi khai báo. 
+
+    npm i --save class-validator class-transformer
+
+* transformation: chuyển đổi input data thành dạng mong muốn (VD: từ string thành integer)
+* validation: đánh giá dữ liệu đầu vào và nếu hợp lệ, chỉ cần truyền nó qua mà không thay đổi; nếu không, ném một exception
+
+-------------
+Cache:
+Là công nghệ đơn giản giúp gia tăng hiệu năng cho ứng dụng của bạn. Nó hoạt động như một kho lưu trữ dữ liệu tạm thời cung cấp khả năng truy cập dữ liệu hiệu suất cao.
+
+    npm install @nestjs/cache-manager cache-manager
+
++ In-memory cache:
+Nest cung cấp API thống nhất cho nhiều nhà cung cấp lưu trữ cache khác nhau. API tích hợp là kho lưu trữ dữ liệu trong bộ nhớ. Tuy nhiên, bạn có thể dễ dàng chuyển sang giải pháp toàn diện hơn, như Redis.
+- Để bật tính năng enable caching, import CacheModule và gọi phương thức register() của nó.
+import { Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
+import { AppController } from './app.controller';
+@Module({
+  imports: [CacheModule.register()],
+  controllers: [AppController],
+})
+export class AppModule {}
+
+- Tương tác với Cache store: Để tương tác với cache manager instance, inject nó vào class bằng cách sử dụng CACHE_MANAGER token:
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+
+- Phương thức get trên instance Cache (từ package cache-manager) được sử dụng để lấy các mục từ cache. Nếu mục không tồn tại trong cache, null sẽ được trả về.
+    const value = await this.cacheManager.get('key');
+- Để thêm một mục vào cache, sử dụng phương thức set:
+    await this.cacheManager.set('key', 'value');
+
+Thời gian hết hạn mặc định của cache là 5 giây, Set TTL: 
+    await this.cacheManager.set('key', 'value', 1000);
+Để vô hiệu hóa thời gian hết hạn của cache, hãy đặt thuộc tính cấu hình ttl thành 0:
+    await this.cacheManager.set('key', 'value', 0);
+Để xóa một mục khỏi cache, hãy sử dụng phương thức del:
+    await this.cacheManager.del('key');
+Để xóa toàn bộ cache, hãy sử dụng phương thức reset:
+    await this.cacheManager.reset();
+

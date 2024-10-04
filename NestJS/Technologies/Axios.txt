@@ -1,0 +1,33 @@
+Là gói ứng dụng khách HTTP phong phú được sử dụng rộng rãi. 
+Nest bao bọc Axios và hiển thị nó thông qua tích hợp sẵn HttpModule. Và HttpModule exports HttpService class.
+trong đó hiển thị các phương thức dựa trên Axios để thực hiện các yêu cầu HTTP. 
+Thư viện cũng chuyển đổi các phản hồi HTTP kết quả thành Observables.
+
+---------------------------------------------------------------------------------------------
++ installation: npm i --save @nestjs/axios axios
+
+@Module({
+  imports: [HttpModule],
+  providers: [CatsService],
+})
+export class CatsModule {}
+
+@Injectable()
+export class CatsService {
+  constructor(private readonly httpService: HttpService) {}
+
+  findAll(): Observable<AxiosResponse<Cat[]>> {
+    return this.httpService.get('http://localhost:3000/cats');
+  }
+}
+---------------------------------------------------------------------------------------------
+const axios = require('axios');
+
+// Thực hiện yêu cầu GET
+axios.get('https://jsonplaceholder.typicode.com/posts')
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
