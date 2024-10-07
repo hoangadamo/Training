@@ -1,0 +1,44 @@
++ Để xử lý quá trình tải tệp lên, Nest cung cấp một mô-đun tích hợp dựa trên gói phần mềm trung gian nhiều tầng cho Express.
++ Để tải lên một tệp, chỉ cần kết nối bộ chặn FileInterceptor() với trình xử lý định tuyến và trích xuất tệp từ yêu cầu chúng tag cách sử dụng @UploadedFile()
+
++ installation: npm i -D @types/multer
+
+@Post('upload')
+@UseInterceptors(FileInterceptor('file'))
+uploadFile(@UploadedFile() file: Express.Multer.file){
+    console.log(file);
+}
+
++ Vidation File trước khi upload: VD: kiểm tra kích cỡ file < 1kB:
+import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
+
+@Injectable()
+export class FileSizeValidationPipe implements PipeTransform {
+  transform(value: any, metadata: ArgumentMetadata) {
+    // "value" is an object containing the file's attributes and metadata
+    const oneKb = 1000;
+    return value.size < oneKb;
+  }
+}
+
++ Có thể upload nhiều file cùng lúc
+@Post('upload')
+@UseInterceptors(FilesInterceptor('files'))
+uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
+  console.log(files);
+}
+
++ Upload với các field khác nhau:
+@Post('upload')
+@UseInterceptors(FileFieldsInterceptor([
+  { name: 'avatar', maxCount: 1 },
+  { name: 'background', maxCount: 1 },
+]))
+uploadFile(@UploadedFiles() files: { avatar?: Express.Multer.File[], background?: Express.Multer.File[] }) {
+  console.log(files);
+}
+
++ Lựa chọn vị trí lưu file:
+MulterModule.register({
+  dest: './upload',
+});

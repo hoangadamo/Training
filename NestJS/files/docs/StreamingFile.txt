@@ -1,0 +1,16 @@
+Trong NestJS, streaming file được sử dụng để truyền tải dữ liệu dưới dạng dòng (stream) thay vì tải toàn bộ file vào bộ nhớ trước khi gửi phản hồi. Điều này rất hữu ích trong các trường hợp làm việc với các file lớn vì:
+    + Tiết kiệm bộ nhớ: Thay vì đọc toàn bộ file vào bộ nhớ, bạn có thể đọc và gửi từng phần nhỏ của file. Điều này đặc biệt quan trọng đối với các file lớn như video hoặc tệp dữ liệu lớn.
+    + Hiệu suất tốt hơn: Streaming giúp cải thiện hiệu suất tổng thể của ứng dụng, đặc biệt là khi xử lý các tệp lớn hoặc khi ứng dụng có nhiều người dùng truy cập cùng lúc.
+    + Cải thiện trải nghiệm người dùng: Trong các ứng dụng yêu cầu tải xuống file hoặc phát video, streaming cho phép người dùng nhận và xử lý dữ liệu một cách liên tục mà không cần phải đợi cho toàn bộ file được tải về trước.
+    
+Có thể có những lúc chúng ta muốn gửi lại một tệp từ API REST của mình cho khách hàng. Để thực hiện việc này với Nest, thông thường chúng ta làm như sau:
+
+@Controller('file')
+export class FileController {
+  @Get()
+  getFile(@Res() res: Response) {
+    const file = createReadStream(join(process.cwd(), 'package.json'));
+    file.pipe(res);
+  }
+}
+
